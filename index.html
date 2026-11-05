@@ -239,7 +239,7 @@ article h2::after{content:attr(data-n);font-variant-numeric:tabular-nums}
 .list small{color:var(--faint);font-size:11px}
 .list .ic{width:13px;height:13px;color:var(--faint)}
 .tl{display:grid}
-.tl div{display:grid;grid-template-columns:50px 1fr;gap:12px;font-size:12.5px;line-height:1.45;letter-spacing:-0.012em;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.08);color:rgba(255,255,255,.72)}
+.tl div{display:grid;grid-template-columns:62px 1fr;gap:12px;font-size:12.5px;line-height:1.45;letter-spacing:-0.012em;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.08);color:rgba(255,255,255,.72)}
 .tl div:last-child{border-bottom:0}
 .tl b{font-weight:700;letter-spacing:-0.04em;color:#fff}
 .tl div.cur b{color:var(--amber)}
@@ -397,6 +397,7 @@ html.is-entering .rail{animation:au-on .6s ease-out 1.1s both;animation-play-sta
   <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6"/></symbol>
   <symbol id="i-layers2" viewBox="0 0 24 24"><path d="M4 7l8-3.5L20 7v3l-8 3.5L4 10z"/><path d="M4 14l8 3.5 8-3.5"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19c3-4 6-7 10-9"/></symbol>
   <symbol id="i-weight" viewBox="0 0 24 24"><path d="M6.5 9h11l2 11h-15z"/><circle cx="12" cy="6" r="2.5"/></symbol>
 </svg>
 
@@ -491,6 +492,7 @@ const PARTS = [
    analysis:'Mũ giáp là nơi Tony nhìn, phân tích và ra lệnh. Vì mũ hiện ra nhanh, anh có thể mở mặt để nói chuyện rồi đóng lại ngay khi trận đánh bắt đầu.',
    limit:'Mũ bị đánh vỡ nhiều lần trong trận chiến với Thanos. Mỗi lần dựng lại, Tony phải lấy bớt nano từ phần khác của bộ giáp.',
    film:'Trước chuyến du hành thời gian, Tony dùng mũ giáp ghi lại một tin nhắn hologram cho vợ là Pepper và con gái Morgan, phòng khi anh không trở về. Tin nhắn đó được phát trong đám tang của anh.',
+   nature:'Dơi phát ra tiếng kêu rồi nghe tiếng vọng lại để "nhìn" trong bóng tối. Cảm biến nhìn xuyên tường của mũ giáp làm việc theo ý tưởng tương tự: phát tín hiệu, thu lại, rồi dựng thành hình ảnh.',
    caption:'Mũ giáp: hiện ra trong tích tắc, nhìn xuyên tường.', anchor:[0,336,37], n:[0,.1,1], zoom:2.9, pitch:-.04 },
  { key:'reactor', name:'Lò phản ứng hồ quang', en:'Arc Reactor', sys:['control','weapon'], tags:['Nút gọi giáp','Unibeam','Nguồn năng lượng'],
    desc:'Lò phản ứng hình tam giác ở giữa ngực là nguồn năng lượng của bộ giáp. Nó cũng là "nút bấm": Tony chỉ cần chạm vào lò, cả bộ giáp nano hiện ra quanh người anh trong vài giây.',
@@ -498,6 +500,7 @@ const PARTS = [
    how:'Khi Tony chạm vào lò, các hạt nano chảy ra và phủ dần lên khắp người anh, từ ngực ra tay, chân và đầu. Khi bắn Unibeam, năng lượng từ lò được dẫn thẳng ra phía trước.',
    analysis:'Một bộ phận làm ba việc: cấp năng lượng, gọi bộ giáp và bắn Unibeam. Nhờ vậy Tony không cần mang theo vali hay vòng tay như các bộ giáp cũ.',
    limit:'Lò phản ứng vẫn là trái tim của bộ giáp. Nếu lò hỏng, cả bộ giáp mất năng lượng.',
+   nature:'Lò phản ứng giống trái tim: nằm giữa ngực, liên tục đưa năng lượng đi khắp cơ thể. Tim bơm máu nuôi từng cơ quan, lò "bơm" năng lượng nuôi từng bộ phận của bộ giáp.',
    caption:'Lò phản ứng: chạm vào là giáp hiện ra.', anchor:[0,274,41], n:[0,.15,1], zoom:3.2, pitch:0 },
  { key:'chest', name:'Giáp ngực', en:'Chest Plating', sys:['armor'], tags:['Tấm giáp cứng','Chịu đòn Thanos','Hỗ trợ sự sống'],
    desc:'Phần thân được bọc bằng các tấm giáp cứng, xếp lớp chồng lên nhau. Bộ giáp được làm để chịu được những cú đánh rất mạnh, kể cả đòn tay không của Thanos.',
@@ -505,6 +508,7 @@ const PARTS = [
    how:'Các tấm giáp phân tán lực của cú đánh ra khắp thân. Bên trong, hệ thống hỗ trợ sự sống giữ cho Tony thở và an toàn cả ở những nơi độc hại.',
    analysis:'Đây là phần bảo vệ tim và lò phản ứng. Mark 85 cứng hơn hẳn Mark L, bộ giáp trước đó đã bị Thanos phá nát trên hành tinh Titan.',
    limit:'Giáp rất cứng nhưng người bên trong vẫn chịu lực va chạm. Tony từng bị ngất khi Thanos dùng anh làm khiên đỡ cây búa Mjølnir.',
+   nature:'Tê tê và cá có lớp vảy cứng xếp chồng lên nhau: vừa chặn được răng và móng vuốt, vừa cho cơ thể uốn cong. Các nhà khoa học thật đang nghiên cứu vảy cá để làm áo giáp mềm mà vẫn cứng.',
    caption:'Giáp ngực: đủ cứng để chịu đòn của Thanos.', anchor:[14,257,44], n:[.27,.03,.96], zoom:2.0, pitch:.04 },
  { key:'back', name:'Lưng & tấm hấp thụ', en:'Back & Absorption Panels', sys:['weapon','armor'], tags:['6 tấm hấp thụ','Trữ năng lượng','Tăng sức repulsor'],
    desc:'Trên lưng có 6 tấm hấp thụ năng lượng. Chúng hút năng lượng từ bên ngoài, ví dụ tia sét, giữ lại rồi dùng để làm repulsor mạnh hơn nhiều lần.',
@@ -513,6 +517,7 @@ const PARTS = [
    analysis:'Nhờ các tấm này, Tony "mượn" được sức mạnh của đồng đội. Đây là cách Iron Man và Thor phối hợp để tấn công Thanos.',
    limit:'Các tấm chỉ hữu ích khi có nguồn năng lượng lớn từ bên ngoài, như sét của Thor.',
    film:'Trong Avengers: Endgame, Thor phóng sét vào Tony. Bộ giáp hấp thụ rồi bắn ra 8 tia repulsor cùng lúc, buộc Thanos phải dùng kiếm để đỡ.',
+   nature:'Lá cây hứng ánh nắng, giữ năng lượng lại rồi dùng dần. Các tấm trên lưng cũng hứng năng lượng từ bên ngoài, như sét của Thor, cất lại rồi dùng để bắn repulsor.',
    caption:'Lưng: 6 tấm hút năng lượng, như sét của Thor.', anchor:[16,276,-25], n:[.15,0,-1], zoom:1.9, pitch:.06 },
  { key:'shoulder', name:'Vai', en:'Shoulders', sys:['armor'], tags:['Tấm giáp cứng','Khớp linh hoạt','Nối thân với tay'],
    desc:'Vai được che bằng các tấm giáp lớn, nối phần thân với hai cánh tay. Bên dưới là khớp nano, cho phép Tony xoay và giơ tay tự do.',
@@ -520,6 +525,7 @@ const PARTS = [
    how:'Khi Tony vung tay, lực truyền từ thân qua vai ra cánh tay. Các tấm giáp vai trượt lên nhau để không cản chuyển động.',
    analysis:'Vai phải vừa cứng để đỡ đòn, vừa linh hoạt để Tony đánh và ngắm theo mọi hướng.',
    limit:'Khớp giữa các tấm là chỗ giáp mỏng hơn, dễ bị tổn thương khi trúng đòn trực diện.',
+   nature:'Vỏ tôm hùm và cua chia thành từng đốt cứng, nối với nhau bằng khớp mềm. Nhờ vậy chúng vừa được bảo vệ, vừa cử động được. Giáp vai Mark 85 cũng xếp lớp theo cách đó.',
    caption:'Vai: nối thân với cánh tay.', anchor:[-52,293,10], n:[-.85,.35,.4], zoom:2.6, pitch:.12 },
  { key:'upperarm', name:'Bắp tay', en:'Nano Muscles', sys:['armor'], tags:['Cơ bắp nano','Sức mạnh siêu phàm','Giống cơ thật'],
    desc:'Bắp tay của Mark 85 không chỉ là giáp mà là "cơ bắp" làm bằng nano. Chúng giúp Tony khỏe hơn người thường rất nhiều lần.',
@@ -528,6 +534,7 @@ const PARTS = [
    analysis:'Nhờ cơ nano, Tony đủ sức giằng co với Thanos để giành găng Vô Cực. Bộ Mark L trước đó sẽ không làm được điều này.',
    limit:'Dù rất khỏe, Tony vẫn yếu hơn Thanos khi đánh tay đôi lâu.',
    film:'Bộ Mark 85 thật có bắp tay và đùi màu vàng, trông như cơ bắp. Thiết kế này gần nhất với bộ giáp đỏ-vàng cổ điển trong truyện tranh do họa sĩ Steve Ditko vẽ.',
+   nature:'Cơ bắp thật gồm hàng triệu sợi nhỏ cùng co lại để tạo lực. Cơ nano của Mark 85 bắt chước ý này. Ngoài đời, các nhà khoa học cũng đang làm "cơ nhân tạo" bằng những sợi vật liệu biết co giãn khi có điện.',
    caption:'Bắp tay: cơ bắp làm bằng nano.', anchor:[-50,262,14], n:[-.9,0,.4], zoom:2.4, pitch:.04 },
  { key:'gauntlet', name:'Cẳng tay', en:'Forearm', sys:['weapon'], tags:['Lưỡi năng lượng','Lá chắn năng lượng','Vũ khí nano'],
    desc:'Từ cẳng tay, Tony có thể biến nano thành vũ khí và dụng cụ ngay lúc cần. Hai thứ hay dùng nhất là lưỡi kiếm năng lượng và lá chắn năng lượng màu xanh.',
@@ -536,6 +543,7 @@ const PARTS = [
    analysis:'Một bộ phận làm được nhiều việc: tấn công, phòng thủ và làm dụng cụ. Tony không cần mang sẵn từng loại vũ khí.',
    limit:'Số nano có hạn. Làm vũ khí lớn ở chỗ này thì chỗ khác của bộ giáp sẽ mỏng đi.',
    film:'Khi Hulk dùng găng Vô Cực để đưa mọi người trở lại, Tony dựng lá chắn năng lượng để che cho mình và Hawkeye khỏi luồng năng lượng. Mở đầu trận chiến Trái Đất, anh dùng lưỡi kiếm năng lượng để đánh Thanos.',
+   nature:'Đàn kiến quân đội có thể bám vào nhau tạo thành cây cầu sống, xong việc lại tách ra. Nano của Mark 85 cũng tụ lại thành kiếm hay khiên, rồi tách ra trở về làm giáp.',
    caption:'Cẳng tay: nano biến thành kiếm hoặc khiên.', anchor:[-66,215,16], n:[-.8,0,.6], zoom:2.4, pitch:.04 },
  { key:'hand', name:'Bàn tay & găng Vô Cực', en:'Hand & Nano Gauntlet', sys:['weapon','flight'], tags:['Repulsor','Laser đầu ngón tay','6 Viên Đá Vô Cực'],
    desc:'Lòng bàn tay có repulsor để bắn và để lái khi bay. Đầu ngón tay có laser cắt được kim loại. Ở bàn tay phải, Tony tạo ra một chiếc găng nano chứa cả 6 Viên Đá Vô Cực.',
@@ -544,6 +552,7 @@ const PARTS = [
    analysis:'Bàn tay là nơi Tony làm được nhiều việc nhất: bắn, bay, cắt, chữa vết thương. Cuối cùng, chính bàn tay này đã kết thúc cuộc chiến với Thanos.',
    limit:'Bộ giáp chứa được 6 Viên Đá nhưng che chắn kém hơn găng Vô Cực thật. Sức mạnh của các Viên Đá quá lớn với cơ thể Tony.',
    film:'Thanos giành được găng Vô Cực, nhưng Tony đã lén dùng nano lấy hết 6 Viên Đá sang bàn tay mình. Anh búng tay, xoá sổ Thanos và cả đội quân. Sau đó Tony qua đời vì sức mạnh của các Viên Đá.',
+   nature:'Chim lái bằng cách nghiêng đầu cánh và đuôi từng chút một. Repulsor ở hai bàn tay làm việc tương tự: đẩy nhẹ sang một bên để đổi hướng và giữ thăng bằng.',
    caption:'Bàn tay: nơi chứa 6 Viên Đá Vô Cực.', anchor:[-76,166,32], n:[-.6,.2,.8], zoom:2.8, pitch:.02 },
  { key:'pelvis', name:'Hông', en:'Waist & Hip', sys:['armor'], tags:['Khớp eo','Đỡ tải','Linh hoạt'],
    desc:'Hông gồm các tấm giáp trượt lên nhau, cho phép Tony xoay eo và cúi người. Đây là chỗ nối nửa trên với nửa dưới của bộ giáp.',
@@ -551,6 +560,7 @@ const PARTS = [
    how:'Khi bay, lực đẩy từ giày đi lên qua chân, qua hông rồi tới thân. Khi đáp đất, lực đi ngược lại. Hông là chỗ chuyển tiếp ở giữa.',
    analysis:'Hông phải đủ cứng để truyền lực mà không làm Tony bị gập người khi bay nhanh hoặc khi đỡ đòn.',
    limit:'Eo không xoay được nhiều như người thật, nên một số động tác đánh gần bị hạn chế.',
+   nature:'Ở người, xương chậu là chỗ nối thân với chân và truyền sức nặng từ trên xuống. Hông của bộ giáp đóng đúng vai trò đó.',
    caption:'Hông: chỗ nối nửa trên và nửa dưới.', anchor:[17,180,38], n:[.1,0,1], zoom:2.2, pitch:.04 },
  { key:'legs', name:'Chân', en:'Legs', sys:['armor'], tags:['Cơ đùi nano','Giáp ống chân','Sức bật'],
    desc:'Đùi là cơ bắp nano, ống chân được bọc giáp cứng. Nhờ vậy chân vừa khỏe, vừa chịu được những cú đáp đất mạnh.',
@@ -558,6 +568,7 @@ const PARTS = [
    how:'Cơ nano ở đùi co duỗi theo chân Tony, tăng lực cho mỗi bước đi, cú đá hay cú bật nhảy. Giáp ống chân che phần xương dễ bị đánh trúng.',
    analysis:'Chân là bệ đỡ cho động cơ ở giày, nên phải chịu toàn bộ lực đẩy khi bay.',
    limit:'Bộ giáp nặng, nên đi bộ trên mặt đất chậm hơn bay.',
+   nature:'Chuột túi (kangaroo) có gân chân rất đàn hồi: khi đáp xuống, gân căng ra và giữ năng lượng, rồi bật lại để nhảy tiếp mà đỡ tốn sức. Cơ nano ở đùi giúp Tony đá và bật nhảy theo ý tưởng gần giống vậy.',
    caption:'Chân: cơ nano ở đùi, giáp cứng ở ống chân.', anchor:[18,120,32], n:[.25,0,.97], zoom:1.6, pitch:.04 },
  { key:'boots', name:'Giày phản lực', en:'Boot Thrusters', sys:['flight'], tags:['Lực đẩy chính','Bay rất nhanh','Đáp đất'],
    desc:'Giày được bọc giáp cứng và có động cơ phản lực gắn sẵn, tạo lực đẩy chính để bộ giáp bay với tốc độ rất cao.',
@@ -565,6 +576,7 @@ const PARTS = [
    how:'Động cơ ở đế giày phun lực đẩy xuống dưới để nâng người lên. Muốn bay nhanh, Tony duỗi thẳng người và để giày đẩy về phía sau.',
    analysis:'Vì động cơ chính ở chân, hai tay được rảnh để chiến đấu, kể cả khi đang bay.',
    limit:'Lực đẩy ở chân khó đổi hướng nhanh, nên Tony vẫn cần repulsor ở tay để lái.',
+   nature:'Mực và sứa di chuyển bằng cách phun mạnh nước ra phía sau để lao về phía trước. Giày phản lực cũng đẩy bộ giáp đi theo cùng nguyên lý: phun mạnh ra một hướng để bay về hướng ngược lại.',
    caption:'Giày: động cơ chính để bay.', anchor:[26,10,45], n:[.2,.2,.96], zoom:2.1, pitch:.22 }
 ];
 PARTS.forEach((p,i)=>{ p.i=i; });
@@ -582,6 +594,8 @@ const OVERVIEW = {
   timeline:[['Mk I','Iron Man (2008). Làm từ vũ khí của Stark Industries trong hang đá ở Afghanistan để thoát thân.'],['Mk II','Bản thử bay đầu tiên, màu bạc. Bị đóng băng khi bay quá cao. Sau này Rhodey biến nó thành War Machine.'],['Mk III','Bộ đỏ-vàng đầu tiên, bằng hợp kim vàng-titan. Dùng ở trận Gulmira và trận đấu với Iron Monger.'],['Mk V','Iron Man 2 (2010). Gấp gọn trong một chiếc vali, dùng khi Ivan Vanko tấn công ở Monaco.'],['Mk VII','The Avengers (2012). Tự bay tới người mặc nhờ vòng tay định vị, có tên lửa ở vai. Dùng trong trận chiến New York.'],['Mk XLII','Iron Man 3 (2013). Từng mảnh giáp tự bay tới và ghép lên người Tony.'],['Mk L','Avengers: Infinity War (2018). Bộ giáp nano đầu tiên. Bị Thanos phá hỏng trong trận chiến trên hành tinh Titan.'],['Mk 85','Avengers: Endgame (2019). Bản nâng cấp mạnh nhất từ Mark L, cũng là bộ giáp cuối cùng.']],
   heist:[['1','Tony mặc Mark 85 quay về năm 2012, đúng lúc trận chiến New York vừa kết thúc, để lấy khối Tesseract. Loki nhân lúc hỗn loạn mang khối Tesseract trốn mất.'],['2','Tony và Steve Rogers quay về năm 1970, tới căn cứ Camp Lehigh ở New Jersey, lấy lại được khối Tesseract và thêm hạt Pym.'],['3','Tony, Rocket và Bruce Banner làm một chiếc găng nano giống găng Vô Cực. Hulk đeo găng và búng tay, đưa mọi người bị Thanos xoá sổ trở lại. Tony dùng lá chắn năng lượng che cho mình và Hawkeye, rồi xịt thuốc nano lên cánh tay bị thương của Hulk.']],
   story:[['1','Thanos từ năm 2014 đuổi theo tới hiện tại và tấn công căn cứ Avengers. Tony, Captain America và Thor cùng đánh hắn. Tony bị ngất khi Thanos dùng anh làm khiên đỡ cây búa Mjølnir.'],['2','Tony tỉnh lại và chiến đấu cùng đồng đội: Guardians, quân Wakanda, Asgard. Pepper cũng mặc giáp chiến đấu cạnh anh. Tony suýt thua Cull Obsidian, may có Spider-Man và Ant-Man tới giúp.'],['3','Thanos giành được găng Vô Cực. Tony lao vào giằng co, lén dùng nano lấy hết 6 Viên Đá sang bàn tay mình và búng tay. Thanos và cả đội quân tan biến.'],['4','Sức mạnh của các Viên Đá quá lớn. Tony qua đời. Trong đám tang, gia đình và bạn bè mở chiếc mũ giáp và nghe lại tin nhắn anh để lại.']],
+  natureIntro:'Phim không nói bộ giáp được lấy cảm hứng từ tự nhiên. Nhưng nhiều nguyên lý của nó rất giống cách động vật và cơ thể người hoạt động. Ngoài đời, các nhà khoa học cũng học từ tự nhiên để làm vật liệu và robot, gọi là phỏng sinh học (biomimicry).',
+  nature:[['Tê tê','Vảy cứng xếp chồng: vừa chống đòn vừa uốn cong được. Giống giáp ngực.'],['Tôm hùm','Vỏ chia đốt, nối bằng khớp mềm. Giống giáp vai.'],['Cơ bắp','Hàng triệu sợi nhỏ cùng co lại. Giống cơ nano ở tay và đùi.'],['Kiến','Bám vào nhau thành cầu sống rồi tách ra. Giống nano tụ thành kiếm, khiên.'],['Da','Vết xước tự liền lại. Giống nano tự vá chỗ hỏng, dựng lại mũ giáp.'],['Lá cây','Hứng năng lượng, cất lại, dùng dần. Giống 6 tấm hấp thụ ở lưng.'],['Chuột túi','Gân chân giữ năng lượng để bật nhảy. Giống chân bộ giáp.'],['Mực','Phun nước ra sau để lao đi. Giống giày phản lực.'],['Dơi','Nghe tiếng vọng để thấy trong bóng tối. Giống cảm biến nhìn xuyên tường.']],
   traitsTony:'Tony là thiên tài, tỷ phú và nhà từ thiện. Anh hài hước, hay châm chọc, đặc biệt với Captain America, Bruce Banner và Nick Fury. Nhưng anh luôn sẵn lòng bảo vệ người khác, nhất là Pepper và dân thường. Sau nhiều trận chiến, anh hay thấy cô đơn và mắc chứng rối loạn căng thẳng sau sang chấn (PTSD).'
 };
 
@@ -640,6 +654,7 @@ function viewOverview(){
     `<h2>Điểm chính</h2>`, traitRows(OVERVIEW.traits),
     `<h2>Bộ giáp nano</h2>`, `<div class="note">${ic('gear')}<span>${OVERVIEW.nano}</span></div>`,
     `<h2>Ra đời thế nào</h2>`, `<div class="note">${ic('calendar')}<span>${OVERVIEW.made}</span></div>`,
+    `<h2>Học từ tự nhiên</h2>`, `<div class="note">${ic('leaf')}<span>${OVERVIEW.natureIntro}</span></div>`, `<div style="height:8px"></div>`, rows(OVERVIEW.nature),
     `<h2 data-n="11">Bộ phận</h2>`, partRows(PARTS),
     `<h2>Chuyến du hành thời gian</h2>`, rows(OVERVIEW.heist),
     `<h2>Trận chiến Trái Đất</h2>`, rows(OVERVIEW.story),
@@ -679,6 +694,7 @@ function viewPart(i){
     `<h2>Vì sao quan trọng</h2>`, `<div class="note">${ic(SYSTEMS[p.sys[0]].icon)}<span>${p.analysis}</span></div>`,
     `<h2>Điểm yếu</h2>`, `<div class="note warn">${ic('warn')}<span>${p.limit}</span></div>`,
     ...(p.film?[`<h2>Trong phim</h2>`, `<div class="note">${ic('eye')}<span>${p.film}</span></div>`]:[]),
+    ...(p.nature?[`<h2>Giống trong tự nhiên</h2>`, `<div class="note">${ic('leaf')}<span>${p.nature}</span></div>`]:[]),
     `<div class="pager"><button data-p="${prev.i}">${ic('chevl')}${prev.name}</button><button data-p="${next.i}">${next.name}${ic('chev')}</button></div>`,
     `<button class="close" id="closeBtn" aria-pressed="false"><span class="lens" id="lens">${ic('eye')}</span><span><b>Xem gần</b><small>Phóng to vào ${p.name.toLowerCase()}.</small></span>${ic('chev')}</button>`
   ];
