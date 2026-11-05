@@ -41,6 +41,7 @@
   --amber:#ffa94d;
   --amber-deep:#c4621c;
   --warn:#ff8a5c;
+  --hl:#2fe3ff;
   --glass:rgba(19,14,9,.56);
   --bg-grad:linear-gradient(180deg,#0d0905 0%,#0f0a05 15%,#0d0a05 30%,#0d0905 45%,#0e0a06 60%,#0f0c07 75%,#130e08 90%,#130e09 100%);
   --base:#130e09;
@@ -200,7 +201,7 @@ html[data-light="lab"] .hl__ch{background-image:linear-gradient(180deg,#fff 40%,
   background:rgba(13,9,5,.8);border:1px solid var(--rule);padding:4px 8px;opacity:0;pointer-events:none;transition:opacity .2s}
 .pin:hover::after,.pin.on::after{opacity:1}
 .pin:hover{border-color:#fff}
-.pin.on{background:var(--amber);border-color:var(--amber);color:#140c05;box-shadow:0 0 0 5px color-mix(in srgb,var(--amber) 20%,transparent),0 0 18px color-mix(in srgb,var(--amber) 60%,transparent)}
+.pin.on{background:var(--hl);border-color:var(--hl);color:#04161a;box-shadow:0 0 0 5px color-mix(in srgb,var(--hl) 22%,transparent),0 0 18px color-mix(in srgb,var(--hl) 55%,transparent)}
 .pin.hide{opacity:0;pointer-events:none}
 .pin.faded{opacity:.3}
 .pins.off .pin{opacity:0;pointer-events:none}
@@ -810,16 +811,66 @@ function classify(x,y,z){
 function patchMaterial(mat){
   mat.onBeforeCompile=sh=>{
     Object.assign(sh.uniforms,uniforms);
-    sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nattribute float aPart;\nvarying float vPart;')
+    sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nattribute float aPart;\nflat varying float vPart;')
       .replace('#include <begin_vertex>','#include <begin_vertex>\nvPart=aPart;');
-    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying float vPart;\nuniform float uMask[11];\nuniform float uDim;\nuniform float uHover;\nuniform float uTime;\nuniform vec3 uHi;')
-      .replace('#include <map_fragment>','#include <map_fragment>\nfloat pm=0.0;\nfor(int i=0;i<11;i++){ if(abs(float(i)-vPart)<0.5) pm=uMask[i]; }\nfloat ph=abs(vPart-uHover)<0.5?1.0:0.0;\ndiffuseColor.rgb*=mix(1.0,0.36,uDim*(1.0-pm)*(1.0-ph));')
-      .replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance+=uHi*(pm*(0.16+0.08*sin(uTime*3.0))+ph*0.12);');
+    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nflat varying float vPart;\nuniform float uMask[11];\nuniform float uDim;\nuniform float uHover;\nuniform float uTime;\nuniform vec3 uHi;')
+      .replace('#include <map_fragment>','#include <map_fragment>\nfloat pm=0.0;\nfor(int i=0;i<11;i++){ if(abs(float(i)-vPart)<0.5) pm=uMask[i]; }\ndiffuseColor.rgb*=mix(1.0,0.5,uDim*(1.0-pm));');
   };
   mat.needsUpdate=true;
 }
 
 function b64ToBuf(s){const bin=atob(s.trim());const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer;}
+
+/* ===== part highlight: screen-space mask of the exact part, 50% fill + outline ===== */
+const HL_COLOR=new THREE.Color(0x2fe3ff);
+const maskRT=new THREE.WebGLRenderTarget(4,4,{samples:4});
+const maskMat=new THREE.ShaderMaterial({
+  uniforms:{uMask:uniforms.uMask,uHover:uniforms.uHover},
+  vertexShader:`attribute float aPart; flat varying float vPart;
+    void main(){ vPart=aPart; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader:`uniform float uMask[11]; uniform float uHover; flat varying float vPart;
+    void main(){ float pm=0.0; for(int i=0;i<11;i++){ if(abs(float(i)-vPart)<0.5) pm=uMask[i]; }
+      float ph=abs(vPart-uHover)<0.5?1.0:0.0;
+      gl_FragColor=vec4(pm, ph, pm>0.003?1.0:0.0, 1.0); }`
+});
+const hlMat=new THREE.ShaderMaterial({
+  uniforms:{tMask:{value:maskRT.texture},uPx:{value:new THREE.Vector2(1,1)},uCol:{value:HL_COLOR},uFill:{value:.5}},
+  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }`,
+  fragmentShader:`uniform sampler2D tMask; uniform vec2 uPx; uniform vec3 uCol; uniform float uFill; varying vec2 vUv;
+    void main(){
+      vec4 m=texture2D(tMask,vUv);
+      float mnS=1.0, mnH=1.0;
+      for(int i=0;i<12;i++){ float a=float(i)*0.5235988; vec4 n=texture2D(tMask,vUv+vec2(cos(a),sin(a))*uPx);
+        mnS=min(mnS,n.b); mnH=min(mnH,n.g); }
+      float s=m.r;
+      float edgeS=m.b*(1.0-mnS)*s;
+      float fill=s*uFill;
+      float notSel=1.0-step(0.5,m.b);
+      float edgeH=m.g*(1.0-mnH)*0.7*notSel;
+      float fillH=m.g*0.18*notSel;
+      float a=max(max(fill,edgeS),max(edgeH,fillH));
+      if(a<0.002) discard;
+      float e=max(edgeS,edgeH);
+      vec3 col=mix(uCol, vec3(0.86,1.0,1.0), e*0.45);
+      gl_FragColor=vec4(col,a);
+    }`,
+  transparent:true, depthTest:false, depthWrite:false
+});
+const hlScene=new THREE.Scene(), hlCam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const hlQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),hlMat); hlQuad.frustumCulled=false; hlScene.add(hlQuad);
+const _dbs=new THREE.Vector2();
+function sizeMask(){ renderer.getDrawingBufferSize(_dbs); maskRT.setSize(Math.max(1,_dbs.x),Math.max(1,_dbs.y));
+  const k=1.5*renderer.getPixelRatio(); hlMat.uniforms.uPx.value.set(k/Math.max(1,_dbs.x),k/Math.max(1,_dbs.y)); }
+function renderHighlight(){
+  let any=S.hover>=0; for(let i=0;i<11&&!any;i++) if(uniforms.uMask.value[i]>0.003) any=true;
+  if(!any||!model) return;
+  const env=scene.environment, bg=scene.background;
+  scene.overrideMaterial=maskMat;
+  renderer.setRenderTarget(maskRT); renderer.setClearColor(0x000000,0); renderer.clear(true,true,true);
+  renderer.render(scene,camera);
+  scene.overrideMaterial=null; renderer.setRenderTarget(null);
+  renderer.autoClear=false; renderer.render(hlScene,hlCam); renderer.autoClear=true;
+}
 
 const loader=new GLTFLoader();
 loader.setMeshoptDecoder(MeshoptDecoder);
@@ -843,6 +894,7 @@ function onModel(gltf){
     anchorsLocal[p.i]=new THREE.Vector3(...p.anchor).sub(center);
     normals[p.i]=new THREE.Vector3(...p.n).normalize();
   });
+  maskMat.side=mesh.material.side;
   arcLocal=new THREE.Vector3(0,1830,-120).sub(center);
   floorLocal=new THREE.Vector3(0,box.min.y,0).sub(center);
   $('#loader').classList.add('off');
@@ -864,6 +916,7 @@ function measure(){
   const hr=hero.getBoundingClientRect(), sr=stage.getBoundingClientRect();
   F.W=hr.width; F.H=hr.height;
   renderer.setSize(F.W,F.H,false);
+  sizeMask();
   const phone=MQ.matches;
   const sw=sr.width, sh=sr.height;
   F.tcx=sr.left-hr.left+sw/2;
@@ -1058,6 +1111,7 @@ function frame(now){
   camera.setViewOffset(F.W,F.H,F.W/2-F.cx,F.H/2-F.cy,F.W,F.H);
   camera.updateProjectionMatrix();
   renderer.render(scene,camera);
+  renderHighlight();
 
   if(model){
     pivot.updateMatrixWorld(true);
