@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0905">
 <title>Iron Man Atlas</title>
-<meta name="description" content="Tìm hiểu bộ giáp Iron Man Mark VII qua mô hình 3D: 11 bộ phận, 4 nhóm, cách hoạt động và điểm yếu.">
+<meta name="description" content="Tìm hiểu bộ giáp Iron Man Mark VII qua mô hình 3D: 11 bộ phận, cách hoạt động, điểm yếu, các đời giáp và câu chuyện Tony Stark.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Iron Man Atlas">
-<meta property="og:description" content="Tìm hiểu bộ giáp Iron Man Mark VII qua mô hình 3D: 11 bộ phận, 4 nhóm, cách hoạt động và điểm yếu.">
+<meta property="og:description" content="Tìm hiểu bộ giáp Iron Man Mark VII qua mô hình 3D: 11 bộ phận, cách hoạt động, điểm yếu, các đời giáp và câu chuyện Tony Stark.">
 <meta property="og:image" content="https://taidinh93esd.github.io/IronMan-Atlas/og.png?v=3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -487,17 +487,17 @@ const PARTS = [
    desc:'Mũ giáp là trung tâm điều khiển của cả bộ giáp. Tấm mặt nạ có thể tự mở ra và đóng lại. Bên trong là màn hình HUD, hiện ngay trước mắt Tony: mục tiêu, mức năng lượng, chỗ bị hỏng và bản đồ.',
    traits:[['cpu','Màn hình','HUD hiện quanh tầm nhìn'],['signal','Trợ lý','J.A.R.V.I.S., ra lệnh bằng giọng nói'],['eye','Cảm biến','Quét, khóa và theo dõi mục tiêu'],['gear','Mặt nạ','Tự mở, tự đóng bằng động cơ nhỏ']],
    how:'Cảm biến trên mũ quét xung quanh và gửi dữ liệu cho J.A.R.V.I.S. J.A.R.V.I.S. xử lý rồi hiện kết quả lên màn hình HUD. Tony chỉ cần nói hoặc nhìn, không cần bấm nút.',
-   analysis:'Mũ giáp biến bộ giáp từ một cỗ máy thành một hệ thống biết suy nghĩ. J.A.R.V.I.S. lo các việc tính toán, nên Tony có thể tập trung quyết định nên làm gì.',
+   analysis:'Mũ giáp biến bộ giáp từ một cỗ máy thành một hệ thống biết suy nghĩ. J.A.R.V.I.S. lo các việc tính toán, nên Tony có thể tập trung quyết định nên làm gì. J.A.R.V.I.S. còn lấy lại được quyền điều khiển khi bộ giáp bị kẻ khác chiếm, và tra cứu được dữ liệu của S.H.I.E.L.D.',
    limit:'Nếu J.A.R.V.I.S. bị nhiễu hoặc mất kết nối, việc ngắm bắn và dẫn đường kém đi nhiều. Mũ cũng là chỗ dễ bị nhắm vào nhất.',
-   film:'Phim thường quay cảnh từ bên trong mũ: thấy mặt Tony và các thông tin chạy quanh anh. Đó chính là màn hình HUD.',
+   film:'Phim thường quay cảnh từ bên trong mũ: thấy mặt Tony và các thông tin chạy quanh anh. Đó chính là màn hình HUD. Tên J.A.R.V.I.S. được đặt theo Edwin Jarvis, người quản gia của gia đình Stark khi Tony còn nhỏ.',
    caption:'Mũ giáp: nơi Tony nhìn, nghe và ra lệnh.', anchor:[0,2200,160], n:[0,.15,1], zoom:2.9, pitch:-.04 },
  { key:'reactor', name:'Lò phản ứng hồ quang', en:'Arc Reactor', sys:['control','weapon'], tags:['Nguồn điện','Nguyên tố mới','Unibeam'],
    desc:'Vòng tròn phát sáng giữa ngực là nguồn điện của cả bộ giáp. Ở phim Iron Man 2, lõi cũ làm bằng palladium khiến Tony bị nhiễm độc. Anh tự tạo ra một nguyên tố mới để thay, cho lò mạnh hơn và an toàn hơn.',
    traits:[['bolt','Vai trò','Cấp điện cho mọi bộ phận'],['flame','Lõi','Nguyên tố mới, thay palladium'],['target','Vũ khí','Unibeam: tia năng lượng bắn từ ngực'],['shield','Vị trí','Sau lớp giáp ngực dày nhất']],
    how:'Lò tạo ra điện liên tục và truyền đến tay, chân, mũ và vũ khí. Khi bắn Unibeam, năng lượng từ lò được dẫn thẳng ra phía trước.',
    analysis:'Nhờ lò phản ứng, bộ giáp bay, bắn và chiến đấu rất lâu mà không cần nhiên liệu. Unibeam là đòn mạnh nhất vì lấy điện trực tiếp từ lò.',
-   limit:'Đây là điểm yếu chí mạng. Lò bị phá hoặc bị tháo ra thì cả bộ giáp tắt. Bắn Unibeam liên tục sẽ làm các bộ phận khác thiếu điện.',
-   film:'Lò phản ứng đầu tiên được Tony làm trong hang đá ở Afghanistan (Iron Man, 2008), để giữ cho mảnh đạn không chạm vào tim anh.',
+   limit:'Đây là điểm yếu chí mạng. Lò bị phá hoặc bị tháo ra thì cả bộ giáp tắt. Bắn Unibeam liên tục sẽ làm các bộ phận khác thiếu điện. Lò trên ngực còn giữ mảnh đạn tránh xa tim Tony, nên nó không chỉ nuôi bộ giáp mà còn giữ anh sống.',
+   film:'Lò phản ứng nhỏ đầu tiên do Tony và Ho Yinsen làm trong hang đá ở Afghanistan (Iron Man, 2008), để giữ cho mảnh đạn không chạm vào tim anh. Sau này Pepper Potts lồng chiếc lò cũ vào khung kính, kèm dòng chữ "Proof that Tony Stark has a heart" (Bằng chứng Tony Stark có trái tim). Nguyên tố mới thay palladium được Tony tìm ra nhờ một thông điệp cha anh giấu trong mô hình hội chợ Stark Expo.',
    caption:'Lò phản ứng: nguồn điện của cả bộ giáp.', anchor:[0,1765,250], n:[0,0,1], zoom:3.2, pitch:0 },
  { key:'chest', name:'Giáp ngực', en:'Chest Plating', sys:['armor'], tags:['Vàng-titan','Tấm xếp lớp','Chống va đập'],
    desc:'Lớp vỏ bọc ngực và bụng, làm bằng hợp kim vàng-titan. Các tấm giáp chồng lên nhau như vảy cá, nên Tony vẫn cúi người và xoay người được.',
@@ -505,7 +505,7 @@ const PARTS = [
    how:'Mỗi tấm giáp nối với tấm bên cạnh bằng khớp trượt. Khi Tony cúi xuống, các tấm trượt vào nhau. Khi đứng thẳng, chúng trượt ra và khép kín lại.',
    analysis:'Giáp ngực chịu đòn nhiều nhất khi đánh gần. Vì chia thành nhiều tấm, tấm nào hỏng thì thay riêng tấm đó. Nó cũng giúp giữ trọng tâm ổn định khi bay.',
    limit:'Giáp chặn được đạn và va chạm. Nhưng lực của cú va vẫn truyền vào người bên trong, nên Tony vẫn có thể bị thương dù giáp còn nguyên.',
-   film:'Bộ Mark II bằng hợp kim thường bị đóng băng khi Tony bay quá cao và rơi xuống. Từ Mark III, anh chuyển sang hợp kim vàng-titan để không bị đóng băng nữa.',
+   film:'Bộ Mark II bị đóng băng khi Tony bay quá cao và rơi xuống. Chuyến bay thử đó kết thúc bằng cú rơi xuyên qua mái nhà anh. Từ Mark III, anh chuyển sang hợp kim vàng-titan để không bị đóng băng nữa.',
    caption:'Giáp ngực: các tấm nhỏ xếp chồng như vảy cá.', anchor:[140,1620,212], n:[.3,0,1], zoom:2.0, pitch:.04 },
  { key:'back', name:'Lưng & cánh lật', en:'Back & Flaps', sys:['flight','armor'], tags:['Cánh lật','Giữ thăng bằng','Khung giáp'],
    desc:'Trên lưng có các cánh lật nhỏ, bật ra khi bay để chỉnh hướng và giữ thăng bằng, giống cánh tà trên máy bay. Lưng cũng là phần khung nối vai, thân và hông với nhau.',
@@ -535,7 +535,7 @@ const PARTS = [
    how:'Khi kích hoạt, một tấm giáp trên cẳng tay mở ra để lộ đầu phóng. Tony chỉ tay về hướng mục tiêu, vũ khí bắn theo hướng đó.',
    analysis:'Đặt vũ khí ở cẳng tay giúp Tony ngắm bằng động tác chỉ tay tự nhiên. Laser cắt rất mạnh ở cự ly gần, có thể hạ nhiều mục tiêu trong một đường quét.',
    limit:'Laser tốn nhiều điện nên chỉ dùng được ít lần. Cẳng tay cũng hay phải đỡ đòn nên dễ hỏng.',
-   film:'Trong Iron Man 2 (2010), Tony dùng tia laser ở cẳng tay bộ Mark VI để cắt đôi cả nhóm robot drone chỉ trong một lần quét.',
+   film:'Trong Iron Man 2 (2010), ở hội chợ Stark Expo, Ivan Vanko chiếm quyền điều khiển đội robot Hammer Drone. Tony dùng tia laser ở cẳng tay bộ Mark VI để cắt đôi cả nhóm drone chỉ trong một lần quét.',
    caption:'Cẳng tay: chỉ tay là ngắm được.', anchor:[470,1440,25], n:[.85,-.1,.5], zoom:2.4, pitch:.04 },
  { key:'hand', name:'Bàn tay & repulsor', en:'Hand & Repulsor', sys:['weapon','flight'], tags:['Repulsor','Lái khi bay','Cầm nắm'],
    desc:'Giữa lòng bàn tay là repulsor, công nghệ nổi tiếng nhất của Iron Man. Nó bắn ra tia năng lượng để tấn công. Nó cũng là bộ ổn định khi bay: Tony dùng nó để đổi hướng, hãm tốc và đáp đất.',
@@ -543,7 +543,7 @@ const PARTS = [
    how:'Khi Tony xòe tay, repulsor nạp năng lượng từ lò. Bắn mạnh thì thành vũ khí. Phun nhẹ và đều thì thành lực đẩy nhỏ để lái và giữ thăng bằng.',
    analysis:'Một bộ phận làm được hai việc là chiến đấu và bay. Đây là thiết kế gọn nhất của bộ giáp, nhưng cũng có đánh đổi: đang dùng tay để giữ thăng bằng thì không bắn được.',
    limit:'Bắn repulsor khi đang bay làm bộ giáp kém ổn định. Lòng bàn tay bị che hoặc hỏng thì mất cả vũ khí chính lẫn khả năng lái.',
-   film:'Trong phim đầu tiên (2008), Tony thử repulsor ở tay trong xưởng và bị lực đẩy hất văng ra sau. Ban đầu anh làm nó để giữ thăng bằng khi bay, sau đó mới biến nó thành vũ khí.',
+   film:'Trong phim đầu tiên (2008), Tony thử repulsor ở tay trong xưởng và bị lực đẩy hất văng ra sau. Ban đầu anh làm nó để giữ thăng bằng khi bay, sau đó mới biến nó thành vũ khí. Ở Iron Man 2, Tony và Rhodes bắn repulsor chéo vào nhau để tạo một vụ nổ lớn, hạ được Ivan Vanko.',
    caption:'Bàn tay: xòe ra để bắn, cũng để lái.', anchor:[500,1130,95], n:[.8,-.2,.55], zoom:2.8, pitch:.02 },
  { key:'pelvis', name:'Hông & khớp eo', en:'Waist & Hip', sys:['armor'], tags:['Khớp eo','Đỡ tải','Linh hoạt'],
    desc:'Đai hông gồm các tấm trượt lồng vào nhau, cho phép xoay eo và cúi người. Khi đáp đất mạnh, hông chuyển bớt sức nặng từ thân xuống chân, giảm lực dội vào cột sống của Tony.',
@@ -575,8 +575,13 @@ const OVERVIEW = {
   caption:'Mark VII · trận chiến New York, The Avengers (2012)',
   desc:'Đây là bộ giáp Tony Stark mặc trong trận chiến New York. Điểm mới lớn nhất là bộ giáp tự tới với người mặc: Tony đeo vòng tay định vị, bộ giáp phóng ra từ Stark Tower, bay tới và tự khoác lên người anh ngay giữa không trung. Mark VII giữ lại những gì đã hiệu quả ở các bộ trước (hợp kim vàng-titan, repulsor, Unibeam) và mang nhiều vũ khí hơn cho một trận đánh dài.',
   traits:[['calendar','Ra mắt','The Avengers (2012)'],['user','Người mặc','Tony Stark'],['signal','Cách gọi giáp','Vòng tay định vị, phóng từ Stark Tower'],['bolt','Năng lượng','Lò phản ứng, lõi nguyên tố mới']],
+  bracelet:'Trước khi làm Mark VII, Tony xem lại những lần thất bại của các bộ giáp cũ để tìm chỗ cải tiến. Pepper Potts tặng anh một đôi vòng tay từ tính hiệu Colantotte. Tony gắn chúng vào hệ thống của bộ giáp, biến chúng thành vòng định vị: chỉ cần đeo vòng, bộ giáp tìm đến anh rất nhanh.',
+  bio:[['1970','Sinh ngày 29/5/1970 ở Manhattan, New York. Con của Howard và Maria Stark. Cha là nhà phát minh lạnh lùng, nghiêm khắc. Mẹ dịu dàng, hay chơi piano cho Tony nghe.'],['4 tuổi','Tự làm một bảng mạch điện. Gần 7 tuổi, lắp được động cơ V8 cho xe máy.'],['MIT','Vào đại học MIT sớm. Ở đây anh quen James "Rhodey" Rhodes, người bạn thân suốt đời. 16 tuổi giành giải thiết kế robot của MIT. Tốt nghiệp loại xuất sắc năm 17 tuổi (1987).'],['1991','Cha mẹ mất trong một tai nạn xe hơi. Nhiều năm sau mới biết đó là một vụ ám sát do Winter Soldier thực hiện, và Hydra đã che giấu sự thật.'],['1992','Trở thành CEO trẻ nhất của một công ty trong Fortune 500. Stark Industries khi đó chủ yếu làm vũ khí cho quân đội, nên báo chí gọi Tony là "kẻ buôn cái chết".']],
+  origin:[['1','Năm 2008, Tony tới Afghanistan để giới thiệu tên lửa Jericho. Đoàn xe bị phục kích, anh bị thương bởi chính tên lửa của công ty mình và bị nhóm khủng bố Ten Rings bắt.'],['2','Ten Rings ép anh chế tạo tên lửa Jericho. Thay vào đó, Tony và nhà khoa học Ho Yinsen làm lò phản ứng nhỏ để cứu tim anh, rồi chế bộ giáp Mark I từ vũ khí của Stark Industries.'],['3','Tony mặc Mark I thoát ra. Yinsen hy sinh để giúp anh trốn. Rhodey tìm thấy và đưa anh về.'],['4','Về Mỹ, Tony tuyên bố Stark Industries ngừng làm vũ khí, rồi chế Mark II và Mark III.'],['5','Anh mặc Mark III bay tới làng Gulmira để phá vũ khí của Ten Rings. Trên đường về, anh bị máy bay F-22 truy đuổi và còn cứu một phi công bị kẹt dù.'],['6','Obadiah Stane, người cộng sự lâu năm, phản bội anh và bán vũ khí cho Ten Rings. Stane mặc bộ giáp khổng lồ Iron Monger. Tony và Pepper cho lò phản ứng lớn ở nhà máy quá tải để hạ hắn.'],['7','Tony đứng trước báo chí và nói: "I am Iron Man" (Tôi là Iron Man). Anh từ chối câu chuyện che giấu mà S.H.I.E.L.D. đã chuẩn bị sẵn.']],
   story:[['1','Loki ném Tony ra khỏi cửa sổ Stark Tower. Mark VII bay theo và khoác lên người anh khi anh đang rơi.'],['2','Tony cùng nhóm Avengers đánh lính Chitauri trên khắp New York, dùng tên lửa vai và repulsor.'],['3','Tony mang một quả tên lửa hạt nhân bay qua cổng không gian. Bộ giáp mất điện khi ở bên kia và rơi trở lại Trái Đất.']],
-  timeline:[['Mk I','Iron Man (2008). Làm từ phế liệu trong hang đá ở Afghanistan để thoát thân. Nặng, chậm, chỉ bay được một đoạn ngắn.'],['Mk II','Bản thử bay đầu tiên, màu bạc. Bị đóng băng khi bay quá cao.'],['Mk III','Chuyển sang hợp kim vàng-titan và màu đỏ-vàng quen thuộc.'],['Mk IV','Iron Man 2 (2010). Bản nâng cấp, Tony mặc khi mở màn hội chợ Stark Expo.'],['Mk V','Gấp gọn trong một chiếc vali, dùng khi bị tấn công ở Monaco.'],['Mk VI','Dùng lò phản ứng nguyên tố mới, thêm laser ở cẳng tay.'],['Mk VII','The Avengers (2012). Tự bay tới người mặc, thêm tên lửa ở vai.']]
+  before:'Trước trận chiến, Tony đang hoàn thiện Stark Tower, tòa nhà chạy bằng năng lượng sạch. Phil Coulson tới mời anh vào nhóm Avengers sau khi Loki cướp khối Tesseract. Tony mặc Mark VI cùng Captain America và Black Widow bắt Loki ở Stuttgart (Đức). Sau đó anh đánh nhau với Thor. Tia sét từ búa Mjølnir đánh trúng bộ giáp và làm nó được nạp tới 400% năng lượng.',
+  timeline:[['Mk I','Iron Man (2008). Làm từ vũ khí của Stark Industries trong hang đá ở Afghanistan để thoát thân. Nặng, chậm, chỉ bay được một đoạn ngắn.'],['Mk II','Bản thử bay đầu tiên, màu bạc. Bị đóng băng khi bay quá cao. Sau này Rhodey lấy bộ này, gắn thêm vũ khí của Hammer Industries và biến nó thành War Machine.'],['Mk III','Chuyển sang hợp kim vàng-titan và màu đỏ-vàng quen thuộc. Dùng ở trận Gulmira và trận đấu với Iron Monger.'],['Mk IV','Iron Man 2 (2010). Mặc khi mở màn hội chợ Stark Expo. Cũng là bộ Tony mặc trong buổi tiệc sinh nhật thứ 40, khi anh đánh nhau với Rhodey.'],['Mk V','Gấp gọn trong một chiếc vali. Pepper và Happy mang tới khi Ivan Vanko tấn công Tony bằng roi điện ở giải đua Monaco Grand Prix.'],['Mk VI','Dùng lò phản ứng nguyên tố mới, thêm laser ở cẳng tay. Bay linh hoạt hơn các bộ trước. Dùng ở trận Stark Expo và khi bắt Loki.'],['Mk VII','The Avengers (2012). Tự bay tới người mặc nhờ vòng tay định vị, thêm tên lửa ở vai.']],
+  traitsTony:'Tony là thiên tài, tỷ phú và nhà từ thiện. Anh hài hước, hay châm chọc, đặc biệt với Captain America, Bruce Banner và Nick Fury. Nhưng anh luôn sẵn lòng bảo vệ người khác, nhất là Pepper và dân thường. Sau nhiều trận chiến, anh hay thấy cô đơn và mắc chứng rối loạn căng thẳng sau sang chấn (PTSD).'
 };
 
 /* ================= HELPERS ================= */
@@ -625,18 +630,26 @@ function traitRows(t){return `<div class="traits">${t.map(([i,l,v])=>`<div class
 function partRows(list){return `<div class="list">${list.map(p=>`<button data-p="${p.i}"><span class="n">${pad(p.i)}</span><span>${p.name}</span><small>${SYSTEMS[p.sys[0]].short}</small>${ic('chev')}</button>`).join('')}</div>`;}
 
 function viewOverview(){
+  const rows=a=>`<div class="tl">${a.map(([x,y])=>`<div><b>${x}</b><span>${y}</span></div>`).join('')}</div>`;
   return [
     `<div class="eyebrow">Bộ giáp Mark VII</div>`,
     `<h1>Iron Man Mark VII</h1>`,
     `<div class="tags"><span>The Avengers (2012)</span><span>Tự bay tới người mặc</span><span>11 bộ phận</span></div>`,
     `<p class="d">${OVERVIEW.desc}</p>`,
     `<h2>Điểm chính</h2>`, traitRows(OVERVIEW.traits),
-    `<h2>Trận chiến New York</h2>`, `<div class="tl">${OVERVIEW.story.map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>`,
+    `<h2>Vòng tay gọi giáp</h2>`, `<div class="note">${ic('signal')}<span>${OVERVIEW.bracelet}</span></div>`,
     `<h2 data-n="11">Bộ phận</h2>`, partRows(PARTS),
+    `<h2>Tony Stark là ai</h2>`, rows(OVERVIEW.bio),
+    `<div class="note" style="margin-top:12px">${ic('user')}<span>${OVERVIEW.traitsTony}</span></div>`,
+    `<h2>Từ hang đá đến Iron Man</h2>`, rows(OVERVIEW.origin),
     `<h2>Các đời giáp trước Mark VII</h2>`,
     `<div class="tl">${OVERVIEW.timeline.map(([a,b],i)=>`<div class="${i===6?'cur':''}"><b>${a}</b><span>${b}</span></div>`).join('')}</div>`,
+    `<h2>Trước trận New York</h2>`, `<div class="note">${ic('calendar')}<span>${OVERVIEW.before}</span></div>`,
+    `<h2>Trận chiến New York</h2>`, rows(OVERVIEW.story),
     `<h2>Cách xem</h2>`,
-    `<div class="note">${ic('hand')}<span>Bấm thẳng vào mô hình, vào các ô số, hoặc chọn trong danh sách để đọc từng bộ phận.</span></div>`
+    `<div class="note">${ic('hand')}<span>Bấm thẳng vào mô hình, vào các ô số, hoặc chọn trong danh sách để đọc từng bộ phận.</span></div>`,
+    `<h2>Nguồn</h2>`,
+    `<div class="note">${ic('layers')}<span>Thông tin về Tony Stark và các đời giáp tổng hợp từ <a href="https://marvelcinematicuniverse.fandom.com/wiki/Iron_Man" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">Marvel Cinematic Universe Wiki</a>.</span></div>`
   ];
 }
 function viewSystem(k){
