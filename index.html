@@ -109,6 +109,9 @@ button{background:none;border:0;padding:0;cursor:pointer}
   background:radial-gradient(closest-side, color-mix(in srgb,var(--amber) 22%,transparent), rgba(0,0,0,.0) 70%)}
 .floor::after{content:"";position:absolute;inset:22% 18%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent)}
 
+/* part highlight polygons */
+.hlsvg{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible}
+.hlsvg polygon{fill:var(--hl);stroke:#a8f6ff;stroke-width:1.5;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 #gl{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;display:block;opacity:0;transition:opacity 1.2s var(--e-quint)}
 .ready #gl{opacity:1}
 
@@ -821,55 +824,90 @@ function patchMaterial(mat){
 
 function b64ToBuf(s){const bin=atob(s.trim());const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer;}
 
-/* ===== part highlight: screen-space mask of the exact part, 50% fill + outline ===== */
-const HL_COLOR=new THREE.Color(0x2fe3ff);
-const maskRT=new THREE.WebGLRenderTarget(4,4,{samples:4});
-const maskMat=new THREE.ShaderMaterial({
-  uniforms:{uMask:uniforms.uMask,uHover:uniforms.uHover},
-  vertexShader:`attribute float aPart; flat varying float vPart;
-    void main(){ vPart=aPart; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
-  fragmentShader:`uniform float uMask[11]; uniform float uHover; flat varying float vPart;
-    void main(){ float pm=0.0; for(int i=0;i<11;i++){ if(abs(float(i)-vPart)<0.5) pm=uMask[i]; }
-      float ph=abs(vPart-uHover)<0.5?1.0:0.0;
-      gl_FragColor=vec4(pm, ph, pm>0.003?1.0:0.0, 1.0); }`
+/* ===== part highlight: straight-edged hull hugging each part, 50% fill + outline ===== */
+const SVGNS='http://www.w3.org/2000/svg';
+const hlSvg=document.createElementNS(SVGNS,'svg'); hlSvg.setAttribute('class','hlsvg'); hlSvg.setAttribute('aria-hidden','true');
+canvas.after(hlSvg);
+const SPLIT=new Set([4,5,6,7,9,10]);       // left/right parts get one shape per side
+const clusters=[];                          // {part, pts:Float32Array(xyz), nrm:Float32Array(xyz), poly}
+function buildClusters(pos,nor,partArr,matW){
+  const nm=new THREE.Matrix3().getNormalMatrix(matW);
+  const buckets=new Map(), v=new THREE.Vector3(), n=new THREE.Vector3();
+  for(let k=0;k<pos.count;k++){
+    v.fromBufferAttribute(pos,k).applyMatrix4(matW);
+    const p=partArr[k], key=SPLIT.has(p)?p*2+(v.x<0?1:0):p*2;
+    let b=buckets.get(key); if(!b){b=[];buckets.set(key,b);} b.push(k);
+  }
+  buckets.forEach((idx,key)=>{
+    const step=Math.max(1,Math.floor(idx.length/900)), m=Math.ceil(idx.length/step);
+    const pts=new Float32Array(m*3), nrm=new Float32Array(m*3); let j=0;
+    for(let q=0;q<idx.length;q+=step,j++){
+      v.fromBufferAttribute(pos,idx[q]).applyMatrix4(matW); pts.set([v.x,v.y,v.z],j*3);
+      if(nor){ n.fromBufferAttribute(nor,idx[q]).applyMatrix3(nm).normalize(); nrm.set([n.x,n.y,n.z],j*3); }
+    }
+    const poly=document.createElementNS(SVGNS,'polygon'); hlSvg.appendChild(poly);
+    clusters.push({part:key>>1,pts:pts.subarray(0,j*3),nrm:nor?nrm.subarray(0,j*3):null,poly});
+  });
+}
+function hull(P){ // monotone chain, P = [[x,y],...]
+  if(P.length<3) return P;
+  P.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+  const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+  const lo=[],up=[];
+  for(const p of P){ while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0) lo.pop(); lo.push(p); }
+  for(let i=P.length-1;i>=0;i--){ const p=P[i]; while(up.length>=2&&cr(up[up.length-2],up[up.length-1],p)<=0) up.pop(); up.push(p); }
+  up.pop(); lo.pop(); return lo.concat(up);
+}
+/* low-res part-ID buffer: tells which part is actually visible at each screen spot */
+const idRT=new THREE.WebGLRenderTarget(4,4,{minFilter:THREE.NearestFilter,magFilter:THREE.NearestFilter});
+const idMat=new THREE.ShaderMaterial({
+  vertexShader:`attribute float aPart; flat varying float vPart; void main(){ vPart=aPart; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader:`flat varying float vPart; void main(){ gl_FragColor=vec4((vPart+1.0)/255.0,0.0,0.0,1.0); }`
 });
-const hlMat=new THREE.ShaderMaterial({
-  uniforms:{tMask:{value:maskRT.texture},uPx:{value:new THREE.Vector2(1,1)},uCol:{value:HL_COLOR},uFill:{value:.5}},
-  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }`,
-  fragmentShader:`uniform sampler2D tMask; uniform vec2 uPx; uniform vec3 uCol; uniform float uFill; varying vec2 vUv;
-    void main(){
-      vec4 m=texture2D(tMask,vUv);
-      float mnS=1.0, mnH=1.0;
-      for(int i=0;i<12;i++){ float a=float(i)*0.5235988; vec4 n=texture2D(tMask,vUv+vec2(cos(a),sin(a))*uPx);
-        mnS=min(mnS,n.b); mnH=min(mnH,n.g); }
-      float s=m.r;
-      float edgeS=m.b*(1.0-mnS)*s;
-      float fill=s*uFill;
-      float notSel=1.0-step(0.5,m.b);
-      float edgeH=m.g*(1.0-mnH)*0.7*notSel;
-      float fillH=m.g*0.18*notSel;
-      float a=max(max(fill,edgeS),max(edgeH,fillH));
-      if(a<0.002) discard;
-      float e=max(edgeS,edgeH);
-      vec3 col=mix(uCol, vec3(0.86,1.0,1.0), e*0.45);
-      gl_FragColor=vec4(col,a);
-    }`,
-  transparent:true, depthTest:false, depthWrite:false
-});
-const hlScene=new THREE.Scene(), hlCam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
-const hlQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),hlMat); hlQuad.frustumCulled=false; hlScene.add(hlQuad);
-const _dbs=new THREE.Vector2();
-function sizeMask(){ renderer.getDrawingBufferSize(_dbs); maskRT.setSize(Math.max(1,_dbs.x),Math.max(1,_dbs.y));
-  const k=1.5*renderer.getPixelRatio(); hlMat.uniforms.uPx.value.set(k/Math.max(1,_dbs.x),k/Math.max(1,_dbs.y)); }
-function renderHighlight(){
-  let any=S.hover>=0; for(let i=0;i<11&&!any;i++) if(uniforms.uMask.value[i]>0.003) any=true;
-  if(!any||!model) return;
-  const env=scene.environment, bg=scene.background;
-  scene.overrideMaterial=maskMat;
-  renderer.setRenderTarget(maskRT); renderer.setClearColor(0x000000,0); renderer.clear(true,true,true);
-  renderer.render(scene,camera);
-  scene.overrideMaterial=null; renderer.setRenderTarget(null);
-  renderer.autoClear=false; renderer.render(hlScene,hlCam); renderer.autoClear=true;
+let idBuf=new Uint8Array(16), idW=4, idH=4;
+function readIds(){
+  idW=Math.max(8,Math.round(F.W/3)); idH=Math.max(8,Math.round(F.H/3));
+  if(idRT.width!==idW||idRT.height!==idH){ idRT.setSize(idW,idH); idBuf=new Uint8Array(idW*idH*4); }
+  idMat.side=mesh.material.side;
+  scene.overrideMaterial=idMat; renderer.setRenderTarget(idRT); renderer.setClearColor(0x000000,0); renderer.clear(true,true,true);
+  renderer.render(scene,camera); scene.overrideMaterial=null; renderer.setRenderTarget(null);
+  renderer.readRenderTargetPixels(idRT,0,0,idW,idH,idBuf);
+}
+function visibleAs(x,y,part){
+  const cx=Math.floor(x/F.W*idW), cy=Math.floor((1-y/F.H)*idH);
+  for(let dy=-1;dy<=1;dy++) for(let dx=-1;dx<=1;dx++){
+    const px=cx+dx, py=cy+dy; if(px<0||py<0||px>=idW||py>=idH) continue;
+    if(idBuf[(py*idW+px)*4]-1===part) return true;
+  }
+  return false;
+}
+const _M=new THREE.Matrix4(), _T=new THREE.Matrix4(), _q=new THREE.Quaternion(), _p=new THREE.Vector3(), _n=new THREE.Vector3(), _c=new THREE.Vector3();
+function drawHighlight(){
+  if(!clusters.length) return;
+  let active=false; for(const c of clusters){ if(uniforms.uMask.value[c.part]>0.003||S.hover===c.part){active=true;break;} }
+  if(!active){ for(const c of clusters) c.poly.style.display='none'; return; }
+  readIds();
+  _T.makeTranslation(-center.x,-center.y,-center.z);
+  _M.multiplyMatrices(holder.matrixWorld,_T);
+  holder.getWorldQuaternion(_q);
+  hlSvg.setAttribute('viewBox',`0 0 ${F.W} ${F.H}`);
+  for(const c of clusters){
+    const s=uniforms.uMask.value[c.part], hov=(S.hover===c.part&&s<0.5);
+    if(s<0.003&&!hov){ c.poly.style.display='none'; continue; }
+    const P=[], a=c.pts, nr=c.nrm;
+    for(let k=0;k<a.length;k+=3){
+      _p.set(a[k],a[k+1],a[k+2]).applyMatrix4(_M);
+      if(nr){ _n.set(nr[k],nr[k+1],nr[k+2]).applyQuaternion(_q); _c.copy(camera.position).sub(_p); if(_n.dot(_c)<=0) continue; }
+      _p.project(camera); const sx=(_p.x+1)/2*F.W, sy=(1-_p.y)/2*F.H;
+      if(visibleAs(sx,sy,c.part)) P.push([sx,sy]);
+    }
+    const H=hull(P);
+    if(H.length<3||P.length<Math.max(6,(c.pts.length/3)*0.06)){ c.poly.style.display='none'; continue; }
+    c.poly.style.display='';
+    c.poly.setAttribute('points',H.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' '));
+    const fo=hov?0.15:0.5*s, so=hov?0.55:s;
+    c.poly.style.fillOpacity=fo.toFixed(3); c.poly.style.strokeOpacity=so.toFixed(3);
+  }
 }
 
 const loader=new GLTFLoader();
@@ -884,6 +922,7 @@ function onModel(gltf){
   const box=new THREE.Box3();
   for(let k=0;k<n;k++){ v.fromBufferAttribute(pos,k).applyMatrix4(mesh.matrixWorld); box.expandByPoint(v); part[k]=classify(v.x,v.y,v.z); }
   g.setAttribute('aPart',new THREE.BufferAttribute(part,1));
+  buildClusters(pos,g.attributes.normal||null,part,mesh.matrixWorld);
   box.getCenter(center); const size=box.getSize(new THREE.Vector3());
   scaleS = 2/size.y;
   model.position.copy(center).multiplyScalar(-1);
@@ -894,7 +933,6 @@ function onModel(gltf){
     anchorsLocal[p.i]=new THREE.Vector3(...p.anchor).sub(center);
     normals[p.i]=new THREE.Vector3(...p.n).normalize();
   });
-  maskMat.side=mesh.material.side;
   arcLocal=new THREE.Vector3(0,1830,-120).sub(center);
   floorLocal=new THREE.Vector3(0,box.min.y,0).sub(center);
   $('#loader').classList.add('off');
@@ -916,7 +954,6 @@ function measure(){
   const hr=hero.getBoundingClientRect(), sr=stage.getBoundingClientRect();
   F.W=hr.width; F.H=hr.height;
   renderer.setSize(F.W,F.H,false);
-  sizeMask();
   const phone=MQ.matches;
   const sw=sr.width, sh=sr.height;
   F.tcx=sr.left-hr.left+sw/2;
@@ -1111,7 +1148,6 @@ function frame(now){
   camera.setViewOffset(F.W,F.H,F.W/2-F.cx,F.H/2-F.cy,F.W,F.H);
   camera.updateProjectionMatrix();
   renderer.render(scene,camera);
-  renderHighlight();
 
   if(model){
     pivot.updateMatrixWorld(true);
@@ -1143,6 +1179,7 @@ function frame(now){
       el.classList.toggle('faded', S.sys!=='all' && !PARTS[i].sys.includes(S.sys));
       el.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
     }
+    drawHighlight();
     if(lensQueue>=0 && now>lensAt && !pts.size){ captureLens(lensQueue); lensQueue=-1; }
   }
   if(Math.random()<.05) syncClose();
