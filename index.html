@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0905">
 <title>Iron Man Atlas</title>
-<meta name="description" content="Khám phá bộ giáp Iron Man 3D: bấm vào từng phần để tìm hiểu.">
+<meta name="description" content="Tìm hiểu bộ giáp Iron Man Mark VII qua mô hình 3D: 11 bộ phận, 4 nhóm, cách hoạt động và điểm yếu.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Iron Man Atlas">
-<meta property="og:description" content="Khám phá bộ giáp Iron Man 3D: bấm vào từng phần để tìm hiểu.">
+<meta property="og:description" content="Tìm hiểu bộ giáp Iron Man Mark VII qua mô hình 3D: 11 bộ phận, 4 nhóm, cách hoạt động và điểm yếu.">
 <meta property="og:image" content="https://taidinh93esd.github.io/ironman-atlas/og.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -196,7 +196,7 @@ html[data-light="lab"] .hl__ch{background-image:linear-gradient(180deg,#fff 40%,
 .pin{position:absolute;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;pointer-events:auto;
   background:rgba(13,9,5,.62);border:1px solid rgba(255,255,255,.6);color:#fff;font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;
   display:grid;place-items:center;transition:opacity .25s,background .25s,color .25s,box-shadow .25s,border-color .25s;will-change:transform}
-.pin::after{content:attr(data-label);position:absolute;left:26px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:11.5px;font-weight:400;letter-spacing:-0.03em;
+.pin::after{content:attr(data-label);position:absolute;left:26px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:11.5px;font-weight:400;letter-spacing:-0.03em;color:#fff;
   background:rgba(13,9,5,.8);border:1px solid var(--rule);padding:4px 8px;opacity:0;pointer-events:none;transition:opacity .2s}
 .pin:hover::after,.pin.on::after{opacity:1}
 .pin:hover{border-color:#fff}
@@ -414,9 +414,9 @@ html.is-entering .rail{animation:au-on .6s ease-out 1.1s both;animation-play-sta
     <span>Iron Man Atlas</span>
   </a>
   <p class="tagline small">
-    <span style="--ls:-0.045em">Khám phá bộ giáp Iron Man.</span>
-    <span>Bấm vào từng phần để tìm hiểu.</span>
-    <span style="--ls:-0.045em">11 phần, 4 nhóm.</span>
+    <span style="--ls:-0.045em">Tìm hiểu bộ giáp Iron Man Mark VII.</span>
+    <span>Bấm vào từng phần để đọc chi tiết.</span>
+    <span style="--ls:-0.045em">11 bộ phận, 4 nhóm.</span>
   </p>
   <address class="meta small">
     <span style="--ls:-0.047em">Bộ giáp Mark VII</span>
@@ -428,10 +428,10 @@ html.is-entering .rail{animation:au-on .6s ease-out 1.1s both;animation-play-sta
   </div>
 
   <div class="mp" id="mp" role="dialog" aria-label="Danh sách các phần">
-    <label class="mp-search"><svg class="ic"><use href="#i-search"/></svg><input id="q" type="search" autocomplete="off" placeholder="Tìm một phần, ví dụ: tay, mũ…" aria-label="Tìm bộ phận"></label>
+    <label class="mp-search"><svg class="ic"><use href="#i-search"/></svg><input id="q" type="search" autocomplete="off" placeholder="Tìm bộ phận, ví dụ: tay, mũ, tên lửa…" aria-label="Tìm bộ phận"></label>
     <div class="mp-lbl"><span>Nhóm</span></div>
     <div class="mp-sys" id="mpSys"></div>
-    <div class="mp-lbl"><span>Các phần</span><span>11</span></div>
+    <div class="mp-lbl"><span>Bộ phận</span><span>11</span></div>
     <ol class="mp-parts" id="mpParts"></ol>
     <p class="mp-empty" id="mpEmpty" hidden></p>
     <div class="mp-foot">Phím / để tìm · Esc để đóng</div>
@@ -475,89 +475,108 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 /* ================= DATA ================= */
 const SYSTEMS = {
   all:     { name:'Cả bộ giáp', short:'Tất cả', icon:'layers' },
-  weapon:  { name:'Vũ khí', short:'Vũ khí', icon:'target', desc:'Bộ giáp có 4 loại vũ khí: tia sáng ở lòng bàn tay, tia sáng lớn ở ngực, tên lửa nhỏ ở vai và tia laser ở cẳng tay.' },
-  flight:  { name:'Bay', short:'Bay', icon:'flight', desc:'Giày đẩy bộ giáp bay lên. Hai bàn tay giúp lái và giữ thăng bằng. Các cánh nhỏ ở lưng và chân giúp bay thẳng. Máy tính J.A.R.V.I.S. lo việc điều khiển.' },
-  control: { name:'Năng lượng', short:'Năng lượng', icon:'bolt', desc:'Lò phản ứng ở ngực cấp điện cho cả bộ giáp. Mũ giáp là nơi Tony nhìn và ra lệnh.' },
-  armor:   { name:'Lớp giáp', short:'Lớp giáp', icon:'shield', desc:'Lớp vỏ làm bằng kim loại vàng và titan, chia thành nhiều miếng nhỏ. Nhờ vậy Tony vẫn cúi, xoay và giơ tay được. Động cơ nhỏ ở các khớp giúp anh khỏe hơn người thường.' }
+  weapon:  { name:'Vũ khí', short:'Vũ khí', icon:'target', desc:'Mark VII được làm cho một trận đánh dài, nên mang nhiều vũ khí hơn các bộ trước. Repulsor ở lòng bàn tay là vũ khí chính, dùng nhiều nhất. Unibeam ở ngực là đòn mạnh nhất nhưng tốn điện nhất. Tên lửa nhỏ ở vai dùng để bắn nhiều mục tiêu một lúc. Cẳng tay chứa vũ khí phụ cho đánh gần.' },
+  flight:  { name:'Bay', short:'Bay', icon:'flight', desc:'Bộ giáp bay nhờ ba nhóm bộ phận làm việc cùng nhau. Giày tạo lực đẩy chính để nâng người lên. Repulsor ở hai bàn tay dùng để lái, hãm tốc và giữ thăng bằng. Các cánh lật nhỏ ở lưng và chân chỉnh tư thế từng chút. Trợ lý J.A.R.V.I.S. tính toán và điều phối tất cả liên tục.' },
+  control: { name:'Năng lượng & điều khiển', short:'Điều khiển', icon:'bolt', desc:'Hai bộ phận quyết định bộ giáp có chạy được hay không. Lò phản ứng ở ngực cấp điện cho mọi thứ. Mũ giáp là nơi Tony nhìn, ra lệnh và nhận thông tin qua J.A.R.V.I.S. Hỏng một trong hai, cả bộ giáp gần như vô dụng.' },
+  armor:   { name:'Lớp giáp', short:'Lớp giáp', icon:'shield', desc:'Lớp vỏ làm bằng hợp kim vàng và titan. Nó được chia thành nhiều tấm nhỏ trượt lên nhau, nhờ vậy vừa che chắn tốt vừa cho Tony cử động tự do. Ở các khớp có động cơ trợ lực (servo), giúp người mặc khỏe hơn người thường nhiều lần.' }
 };
 const SYS_ORDER = ['all','weapon','flight','control','armor'];
 
 const PARTS = [
- { key:'helmet', name:'Mũ giáp', en:'Helmet', sys:['control'], tags:['Màn hình','J.A.R.V.I.S.','Mặt nạ'],
-   desc:'Mũ giáp che đầu Tony. Mặt nạ có thể mở ra và đóng lại. Bên trong có màn hình hiện bản đồ, mục tiêu và mức pin.',
-   traits:[['cpu','Màn hình','Hiện trước mắt Tony'],['signal','Trợ lý','J.A.R.V.I.S., nghe lời nói'],['eye','Mắt','Tìm và theo dõi mục tiêu'],['gear','Mặt nạ','Tự mở, tự đóng']],
-   analysis:'Tony chỉ cần nói, không cần bấm nút. Máy tính J.A.R.V.I.S. nghe lệnh và làm giúp anh.',
-   limit:'Nếu J.A.R.V.I.S. bị hỏng, Tony khó bay và khó ngắm bắn hơn.',
-   caption:'Mũ giáp: nơi Tony nhìn và ra lệnh.', anchor:[0,2200,160], n:[0,.15,1], zoom:2.9, pitch:-.04 },
- { key:'reactor', name:'Lò phản ứng', en:'Arc Reactor', sys:['control','weapon'], tags:['Nguồn điện','Vòng sáng','Unibeam'],
-   desc:'Vòng tròn sáng ở giữa ngực. Đây là "cục pin" của cả bộ giáp. Tony tự chế ra một chất mới để lò mạnh hơn và an toàn hơn.',
-   traits:[['bolt','Việc làm','Cấp điện cho mọi bộ phận'],['flame','Bên trong','Một chất mới Tony tự chế'],['target','Vũ khí','Unibeam, tia sáng lớn từ ngực'],['shield','Bảo vệ','Nằm sau lớp giáp dày nhất']],
-   analysis:'Nhờ lò phản ứng, bộ giáp bay và chiến đấu được rất lâu mà không cần đổ xăng.',
-   limit:'Nếu lò bị hỏng, cả bộ giáp tắt. Bắn Unibeam nhiều lần sẽ làm hết điện nhanh.',
-   caption:'Lò phản ứng: cục pin của bộ giáp.', anchor:[0,1765,250], n:[0,0,1], zoom:3.2, pitch:0 },
- { key:'chest', name:'Giáp ngực', en:'Chest', sys:['armor'], tags:['Vàng và titan','Nhiều miếng','Chống va đập'],
-   desc:'Lớp giáp che ngực và bụng. Nó gồm nhiều miếng nhỏ xếp chồng lên nhau, giống vảy cá, nên Tony vẫn cúi người được.',
-   traits:[['layers2','Chất liệu','Kim loại vàng và titan'],['gear','Cách làm','Nhiều miếng nhỏ chồng lên nhau'],['shield','Che','Lò phản ứng và cơ thể'],['flight','Bay cao','Không bị đóng băng']],
-   analysis:'Đây là phần bị đánh trúng nhiều nhất. Miếng nào hỏng thì có thể thay riêng miếng đó.',
-   limit:'Giáp chặn được đạn, nhưng cú va mạnh vẫn làm Tony bị đau bên trong.',
-   caption:'Giáp ngực: nhiều miếng nhỏ như vảy cá.', anchor:[140,1620,212], n:[.3,0,1], zoom:2.0, pitch:.04 },
- { key:'back', name:'Lưng', en:'Back', sys:['flight','armor'], tags:['Cánh nhỏ','Giữ thăng bằng','Khung giáp'],
-   desc:'Trên lưng có các cánh nhỏ. Khi bay, cánh bật ra để giữ bộ giáp đi thẳng, giống cánh máy bay.',
-   traits:[['flight','Việc làm','Giữ thăng bằng khi bay'],['gear','Cánh','Tự bật ra, tự thu lại'],['signal','Điều khiển','J.A.R.V.I.S. lo'],['layers2','Khung','Nối vai, thân và hông']],
-   analysis:'Nhờ các cánh nhỏ, bộ giáp có thể rẽ gấp và dừng lại giữa trời mà không bị lộn nhào.',
-   limit:'Nếu cánh hỏng, bộ giáp bay bị lắc. Tony phải dùng tay để giữ thăng bằng.',
-   caption:'Lưng: cánh nhỏ giúp bay thẳng.', anchor:[110,1700,-218], n:[.3,0,-1], zoom:1.9, pitch:.06 },
- { key:'shoulder', name:'Vai', en:'Shoulders', sys:['weapon'], tags:['Tên lửa nhỏ','Bắn nhiều mục tiêu','Giấu trong giáp'],
-   desc:'Dưới miếng giáp vai có giấu tên lửa nhỏ. Khi cần, miếng giáp bật lên và bắn ra nhiều tên lửa cùng lúc. Tony dùng chúng trong trận chiến ở New York.',
-   traits:[['target','Vũ khí','Tên lửa nhỏ'],['eye','Ngắm','Nhiều mục tiêu một lúc'],['gear','Chỗ giấu','Dưới miếng giáp vai'],['weight','Số lượng','Có hạn']],
-   analysis:'Đây là vũ khí duy nhất bắn được nhiều mục tiêu cùng lúc.',
-   limit:'Tên lửa bắn hết thì không nạp lại được giữa trận.',
-   caption:'Vai: tên lửa nhỏ giấu bên trong.', anchor:[370,1915,30], n:[.85,.35,.4], zoom:2.6, pitch:.12 },
- { key:'upperarm', name:'Bắp tay', en:'Upper Arm', sys:['armor'], tags:['Động cơ nhỏ','Giơ tay cao','Vàng và titan'],
-   desc:'Khớp vai gồm nhiều miếng lồng vào nhau, nên Tony giơ tay qua đầu được. Bên trong có động cơ nhỏ giúp tay khỏe hơn.',
-   traits:[['gear','Bên trong','Động cơ nhỏ ở khớp'],['ruler','Cử động','Giơ tay qua đầu'],['layers2','Chất liệu','Kim loại vàng và titan'],['weight','Việc làm','Nối vai với cẳng tay']],
-   analysis:'Nhờ động cơ ở khớp, Tony nâng được những vật rất nặng.',
-   limit:'Khớp là chỗ giáp mỏng nhất. Bị đánh trúng khớp thì tay có thể bị kẹt.',
-   caption:'Bắp tay: khỏe hơn tay người.', anchor:[430,1680,-10], n:[.95,0,.3], zoom:2.4, pitch:.04 },
- { key:'gauntlet', name:'Cẳng tay', en:'Forearm', sys:['weapon'], tags:['Tia laser','Vũ khí phụ','Dây dẫn điện'],
-   desc:'Cẳng tay chứa vũ khí phụ, như tia laser cắt. Điện từ lò phản ứng cũng chạy qua đây để tới bàn tay.',
-   traits:[['target','Vũ khí','Tia laser, tên lửa nhỏ'],['gear','Cách mở','Miếng giáp bật ra'],['bolt','Điện','Từ ngực chạy xuống tay'],['eye','Tầm bắn','Gần']],
-   analysis:'Tony chỉ cần chỉ tay về phía mục tiêu là ngắm được.',
-   limit:'Tia laser tốn rất nhiều điện nên chỉ dùng được vài lần.',
+ { key:'helmet', name:'Mũ giáp', en:'Helmet & Faceplate', sys:['control'], tags:['Màn hình HUD','J.A.R.V.I.S.','Mặt nạ'],
+   desc:'Mũ giáp là trung tâm điều khiển của cả bộ giáp. Tấm mặt nạ có thể tự mở ra và đóng lại. Bên trong là màn hình HUD, hiện ngay trước mắt Tony: mục tiêu, mức năng lượng, chỗ bị hỏng và bản đồ.',
+   traits:[['cpu','Màn hình','HUD hiện quanh tầm nhìn'],['signal','Trợ lý','J.A.R.V.I.S., ra lệnh bằng giọng nói'],['eye','Cảm biến','Quét, khóa và theo dõi mục tiêu'],['gear','Mặt nạ','Tự mở, tự đóng bằng động cơ nhỏ']],
+   how:'Cảm biến trên mũ quét xung quanh và gửi dữ liệu cho J.A.R.V.I.S. J.A.R.V.I.S. xử lý rồi hiện kết quả lên màn hình HUD. Tony chỉ cần nói hoặc nhìn, không cần bấm nút.',
+   analysis:'Mũ giáp biến bộ giáp từ một cỗ máy thành một hệ thống biết suy nghĩ. J.A.R.V.I.S. lo các việc tính toán, nên Tony có thể tập trung quyết định nên làm gì.',
+   limit:'Nếu J.A.R.V.I.S. bị nhiễu hoặc mất kết nối, việc ngắm bắn và dẫn đường kém đi nhiều. Mũ cũng là chỗ dễ bị nhắm vào nhất.',
+   film:'Phim thường quay cảnh từ bên trong mũ: thấy mặt Tony và các thông tin chạy quanh anh. Đó chính là màn hình HUD.',
+   caption:'Mũ giáp: nơi Tony nhìn, nghe và ra lệnh.', anchor:[0,2200,160], n:[0,.15,1], zoom:2.9, pitch:-.04 },
+ { key:'reactor', name:'Lò phản ứng hồ quang', en:'Arc Reactor', sys:['control','weapon'], tags:['Nguồn điện','Nguyên tố mới','Unibeam'],
+   desc:'Vòng tròn phát sáng giữa ngực là nguồn điện của cả bộ giáp. Ở phim Iron Man 2, lõi cũ làm bằng palladium khiến Tony bị nhiễm độc. Anh tự tạo ra một nguyên tố mới để thay, cho lò mạnh hơn và an toàn hơn.',
+   traits:[['bolt','Vai trò','Cấp điện cho mọi bộ phận'],['flame','Lõi','Nguyên tố mới, thay palladium'],['target','Vũ khí','Unibeam: tia năng lượng bắn từ ngực'],['shield','Vị trí','Sau lớp giáp ngực dày nhất']],
+   how:'Lò tạo ra điện liên tục và truyền đến tay, chân, mũ và vũ khí. Khi bắn Unibeam, năng lượng từ lò được dẫn thẳng ra phía trước.',
+   analysis:'Nhờ lò phản ứng, bộ giáp bay, bắn và chiến đấu rất lâu mà không cần nhiên liệu. Unibeam là đòn mạnh nhất vì lấy điện trực tiếp từ lò.',
+   limit:'Đây là điểm yếu chí mạng. Lò bị phá hoặc bị tháo ra thì cả bộ giáp tắt. Bắn Unibeam liên tục sẽ làm các bộ phận khác thiếu điện.',
+   film:'Lò phản ứng đầu tiên được Tony làm trong hang đá ở Afghanistan (Iron Man, 2008), để giữ cho mảnh đạn không chạm vào tim anh.',
+   caption:'Lò phản ứng: nguồn điện của cả bộ giáp.', anchor:[0,1765,250], n:[0,0,1], zoom:3.2, pitch:0 },
+ { key:'chest', name:'Giáp ngực', en:'Chest Plating', sys:['armor'], tags:['Vàng-titan','Tấm xếp lớp','Chống va đập'],
+   desc:'Lớp vỏ bọc ngực và bụng, làm bằng hợp kim vàng-titan. Các tấm giáp chồng lên nhau như vảy cá, nên Tony vẫn cúi người và xoay người được.',
+   traits:[['layers2','Vật liệu','Hợp kim vàng-titan'],['gear','Cấu trúc','Tấm nhỏ trượt chồng lên nhau'],['shield','Che chắn','Lò phản ứng và cơ thể'],['flight','Bay cao','Không bị đóng băng']],
+   how:'Mỗi tấm giáp nối với tấm bên cạnh bằng khớp trượt. Khi Tony cúi xuống, các tấm trượt vào nhau. Khi đứng thẳng, chúng trượt ra và khép kín lại.',
+   analysis:'Giáp ngực chịu đòn nhiều nhất khi đánh gần. Vì chia thành nhiều tấm, tấm nào hỏng thì thay riêng tấm đó. Nó cũng giúp giữ trọng tâm ổn định khi bay.',
+   limit:'Giáp chặn được đạn và va chạm. Nhưng lực của cú va vẫn truyền vào người bên trong, nên Tony vẫn có thể bị thương dù giáp còn nguyên.',
+   film:'Bộ Mark II bằng hợp kim thường bị đóng băng khi Tony bay quá cao và rơi xuống. Từ Mark III, anh chuyển sang hợp kim vàng-titan để không bị đóng băng nữa.',
+   caption:'Giáp ngực: các tấm nhỏ xếp chồng như vảy cá.', anchor:[140,1620,212], n:[.3,0,1], zoom:2.0, pitch:.04 },
+ { key:'back', name:'Lưng & cánh lật', en:'Back & Flaps', sys:['flight','armor'], tags:['Cánh lật','Giữ thăng bằng','Khung giáp'],
+   desc:'Trên lưng có các cánh lật nhỏ, bật ra khi bay để chỉnh hướng và giữ thăng bằng, giống cánh tà trên máy bay. Lưng cũng là phần khung nối vai, thân và hông với nhau.',
+   traits:[['flight','Chức năng','Giữ thăng bằng khi bay'],['gear','Cơ cấu','Cánh tự bật ra, tự thu lại'],['signal','Điều khiển','J.A.R.V.I.S. chỉnh liên tục'],['layers2','Kết cấu','Khung chịu lực của bộ giáp']],
+   how:'Khi bộ giáp nghiêng hoặc rẽ, J.A.R.V.I.S. mở từng cánh một chút để không khí đẩy bộ giáp về đúng tư thế. Các chỉnh sửa này rất nhỏ và diễn ra liên tục.',
+   analysis:'Lực đẩy từ giày và tay rất mạnh nhưng khó kiểm soát. Cánh lật lo các chỉnh sửa nhỏ, giúp bộ giáp rẽ gấp, lượn và dừng lại giữa trời mà không bị lật.',
+   limit:'Cánh lật hỏng thì bộ giáp bị chao đảo khi bay nhanh. Tony phải dùng tay để giữ thăng bằng, nên tay không còn rảnh để chiến đấu.',
+   caption:'Lưng: cánh nhỏ giữ cho bộ giáp bay thẳng.', anchor:[110,1700,-218], n:[.3,0,-1], zoom:1.9, pitch:.06 },
+ { key:'shoulder', name:'Vai & tên lửa', en:'Shoulder Launchers', sys:['weapon'], tags:['Tên lửa nhỏ','Nhiều mục tiêu','Giấu trong giáp'],
+   desc:'Mark VII giấu bệ phóng tên lửa nhỏ dưới tấm giáp vai. Khi cần, tấm giáp bật lên và bắn ra một loạt tên lửa có dẫn đường vào nhiều mục tiêu cùng lúc.',
+   traits:[['target','Loại','Tên lửa nhỏ có dẫn đường'],['eye','Khóa mục tiêu','Nhiều mục tiêu cùng lúc'],['gear','Vị trí','Bật lên từ dưới giáp vai'],['weight','Số lượng','Có hạn, không nạp lại giữa trận']],
+   how:'J.A.R.V.I.S. khóa nhiều mục tiêu trên màn hình HUD. Tấm giáp vai mở ra, mỗi tên lửa bay theo một mục tiêu đã khóa.',
+   analysis:'Đây là vũ khí duy nhất của bộ giáp bắn được nhiều mục tiêu một lúc. Repulsor chỉ bắn từng mục tiêu, nên tên lửa vai rất hợp khi phải đánh với cả một đám đông.',
+   limit:'Số tên lửa có hạn. Bắn hết thì bộ giáp phải quay lại dùng repulsor và Unibeam.',
+   film:'Trong The Avengers (2012), Iron Man dùng tên lửa vai để bắn hạ nhiều lính Chitauri cùng lúc trên bầu trời New York.',
+   caption:'Vai: tên lửa nhỏ giấu dưới lớp giáp.', anchor:[370,1915,30], n:[.85,.35,.4], zoom:2.6, pitch:.12 },
+ { key:'upperarm', name:'Bắp tay & khớp vai', en:'Upper Arm', sys:['armor'], tags:['Servo trợ lực','Giơ tay cao','Vàng-titan'],
+   desc:'Khớp vai làm từ nhiều tấm lồng vào nhau, nên Tony giơ tay qua đầu được. Bên trong có servo, tức động cơ trợ lực, giúp anh nâng được vật nặng hơn sức người nhiều lần.',
+   traits:[['gear','Cơ cấu','Servo trợ lực ở khớp'],['ruler','Cử động','Giơ tay qua đầu, xoay vai rộng'],['layers2','Vật liệu','Hợp kim vàng-titan'],['weight','Vai trò','Truyền lực từ thân xuống tay']],
+   how:'Khi Tony cử động tay, cảm biến đo chuyển động đó. Servo lập tức đẩy thêm lực theo cùng hướng, nên tay giáp đi theo tay người nhưng khỏe hơn nhiều.',
+   analysis:'Bắp tay nối hai bộ phận quan trọng: vai có tên lửa và cẳng tay có vũ khí. Khớp phải đủ cứng để chịu lực giật khi bắn, và đủ linh hoạt để ngắm mọi hướng.',
+   limit:'Khớp là chỗ giáp mỏng nhất. Một đòn trúng vào khe khớp có thể làm kẹt servo, khiến tay mất lực.',
+   caption:'Bắp tay: servo giúp tay khỏe hơn nhiều lần.', anchor:[430,1680,-10], n:[.95,0,.3], zoom:2.4, pitch:.04 },
+ { key:'gauntlet', name:'Cẳng tay', en:'Forearm Gauntlet', sys:['weapon'], tags:['Vũ khí phụ','Laser cắt','Dẫn năng lượng'],
+   desc:'Cẳng tay chứa vũ khí phụ và đường dẫn điện từ lò phản ứng tới bàn tay. Tia laser cắt ở cẳng tay xuất hiện từ bộ Mark VI, và Mark VII giữ kiểu cẳng tay có vũ khí này.',
+   traits:[['target','Vũ khí','Laser cắt, tên lửa nhỏ'],['gear','Bố trí','Tấm giáp mở ra khi dùng'],['bolt','Năng lượng','Dẫn từ lò tới lòng bàn tay'],['eye','Tầm đánh','Gần và trung bình']],
+   how:'Khi kích hoạt, một tấm giáp trên cẳng tay mở ra để lộ đầu phóng. Tony chỉ tay về hướng mục tiêu, vũ khí bắn theo hướng đó.',
+   analysis:'Đặt vũ khí ở cẳng tay giúp Tony ngắm bằng động tác chỉ tay tự nhiên. Laser cắt rất mạnh ở cự ly gần, có thể hạ nhiều mục tiêu trong một đường quét.',
+   limit:'Laser tốn nhiều điện nên chỉ dùng được ít lần. Cẳng tay cũng hay phải đỡ đòn nên dễ hỏng.',
+   film:'Trong Iron Man 2 (2010), Tony dùng tia laser ở cẳng tay bộ Mark VI để cắt đôi cả nhóm robot drone chỉ trong một lần quét.',
    caption:'Cẳng tay: chỉ tay là ngắm được.', anchor:[470,1440,25], n:[.85,-.1,.5], zoom:2.4, pitch:.04 },
- { key:'hand', name:'Bàn tay', en:'Hand', sys:['weapon','flight'], tags:['Repulsor','Lái khi bay','Cầm nắm'],
-   desc:'Giữa lòng bàn tay có repulsor, một ô tròn bắn ra tia sáng. Nó dùng để bắn và cũng dùng để lái khi bay.',
-   traits:[['target','Repulsor','Vừa bắn, vừa lái'],['bolt','Điện','Lấy từ lò phản ứng'],['hand','Cách bắn','Xòe tay về phía trước'],['gear','Ngón tay','Cầm nắm được đồ vật']],
-   analysis:'Một bộ phận làm được hai việc: chiến đấu và bay.',
-   limit:'Khi đang dùng tay để giữ thăng bằng thì Tony không bắn được.',
-   caption:'Bàn tay: xòe ra là bắn, cũng là lái.', anchor:[500,1130,95], n:[.8,-.2,.55], zoom:2.8, pitch:.02 },
- { key:'pelvis', name:'Hông', en:'Hips', sys:['armor'], tags:['Khớp eo','Đỡ sức nặng','Cúi người'],
-   desc:'Đai hông gồm các miếng trượt lên nhau, nên Tony xoay eo và cúi người được. Khi đáp đất mạnh, hông đỡ bớt lực cho lưng.',
-   traits:[['gear','Cách làm','Miếng trượt lên nhau'],['weight','Việc làm','Đỡ sức nặng khi đáp đất'],['ruler','Cử động','Xoay eo, cúi người'],['shield','Che','Hông và bụng dưới']],
-   analysis:'Hông nối nửa trên với nửa dưới của bộ giáp.',
-   limit:'Eo của bộ giáp không xoay được nhiều như người thật.',
-   caption:'Hông: nối nửa trên và nửa dưới.', anchor:[170,1220,178], n:[.35,0,.95], zoom:2.2, pitch:.04 },
- { key:'legs', name:'Chân', en:'Legs', sys:['armor','flight'], tags:['Động cơ nhỏ','Giảm xóc','Cánh nhỏ'],
-   desc:'Đôi chân có động cơ nhỏ và bộ giảm xóc, để Tony đáp đất từ trên cao mà không bị đau. Sau bắp chân có cánh nhỏ giúp bay thẳng.',
-   traits:[['gear','Bên trong','Động cơ nhỏ ở gối và cổ chân'],['weight','Giảm xóc','Đỡ cú đáp đất'],['flight','Bay','Cánh nhỏ ở bắp chân'],['layers2','Chất liệu','Kim loại vàng và titan']],
-   analysis:'Chân vừa để đi bộ, vừa giữ chặt động cơ ở giày khi bay.',
-   limit:'Bộ giáp rất nặng, nên đi bộ chậm hơn bay.',
-   caption:'Chân: đi như người, bay như tên lửa.', anchor:[200,720,135], n:[.3,0,.95], zoom:1.6, pitch:.04 },
- { key:'boots', name:'Giày', en:'Boots', sys:['flight'], tags:['Động cơ chính','Cất cánh','Đáp đất'],
-   desc:'Dưới đế giày là động cơ phun lửa. Đây là động cơ chính giúp bộ giáp bay lên.',
-   traits:[['flame','Việc làm','Đẩy bộ giáp bay lên'],['flight','Phối hợp','Tay giúp lái'],['gear','Đáp đất','Giảm lực trước khi chạm đất'],['bolt','Điện','Lấy từ lò phản ứng']],
-   analysis:'Động cơ ở chân đẩy người lên, nên hai tay được rảnh để lái và chiến đấu.',
-   limit:'Nếu một chiếc giày hỏng, bộ giáp gần như không bay thẳng được.',
-   caption:'Giày: động cơ chính để bay.', anchor:[205,120,120], n:[.3,.15,.95], zoom:2.1, pitch:.22 }
+ { key:'hand', name:'Bàn tay & repulsor', en:'Hand & Repulsor', sys:['weapon','flight'], tags:['Repulsor','Lái khi bay','Cầm nắm'],
+   desc:'Giữa lòng bàn tay là repulsor, công nghệ nổi tiếng nhất của Iron Man. Nó bắn ra tia năng lượng để tấn công. Nó cũng là bộ ổn định khi bay: Tony dùng nó để đổi hướng, hãm tốc và đáp đất.',
+   traits:[['target','Repulsor','Vừa là vũ khí, vừa để lái'],['bolt','Năng lượng','Lấy thẳng từ lò phản ứng'],['hand','Cách bắn','Mở lòng bàn tay về phía mục tiêu'],['gear','Ngón tay','Có khớp riêng, cầm nắm khéo léo']],
+   how:'Khi Tony xòe tay, repulsor nạp năng lượng từ lò. Bắn mạnh thì thành vũ khí. Phun nhẹ và đều thì thành lực đẩy nhỏ để lái và giữ thăng bằng.',
+   analysis:'Một bộ phận làm được hai việc là chiến đấu và bay. Đây là thiết kế gọn nhất của bộ giáp, nhưng cũng có đánh đổi: đang dùng tay để giữ thăng bằng thì không bắn được.',
+   limit:'Bắn repulsor khi đang bay làm bộ giáp kém ổn định. Lòng bàn tay bị che hoặc hỏng thì mất cả vũ khí chính lẫn khả năng lái.',
+   film:'Trong phim đầu tiên (2008), Tony thử repulsor ở tay trong xưởng và bị lực đẩy hất văng ra sau. Ban đầu anh làm nó để giữ thăng bằng khi bay, sau đó mới biến nó thành vũ khí.',
+   caption:'Bàn tay: xòe ra để bắn, cũng để lái.', anchor:[500,1130,95], n:[.8,-.2,.55], zoom:2.8, pitch:.02 },
+ { key:'pelvis', name:'Hông & khớp eo', en:'Waist & Hip', sys:['armor'], tags:['Khớp eo','Đỡ tải','Linh hoạt'],
+   desc:'Đai hông gồm các tấm trượt lồng vào nhau, cho phép xoay eo và cúi người. Khi đáp đất mạnh, hông chuyển bớt sức nặng từ thân xuống chân, giảm lực dội vào cột sống của Tony.',
+   traits:[['gear','Cơ cấu','Tấm trượt lồng vào nhau'],['weight','Chức năng','Chuyển sức nặng từ thân xuống chân'],['ruler','Cử động','Xoay eo, cúi người'],['shield','Che chắn','Hông và bụng dưới']],
+   how:'Khi bay, lực đẩy từ giày đi lên qua chân, qua hông rồi tới thân. Khi đáp đất, lực đi ngược lại. Hông là chỗ chuyển tiếp ở giữa.',
+   analysis:'Hông nối nửa trên (vũ khí, điều khiển) với nửa dưới (lực đẩy, đáp đất). Nó phải đủ cứng để truyền lực đẩy lên thân mà không làm người mặc bị gập lại.',
+   limit:'Eo của bộ giáp không xoay được nhiều như người thật, nên một số động tác đánh gần bị hạn chế.',
+   caption:'Hông: chỗ nối nửa trên và nửa dưới.', anchor:[170,1220,178], n:[.35,0,.95], zoom:2.2, pitch:.04 },
+ { key:'legs', name:'Đùi & ống chân', en:'Legs', sys:['armor','flight'], tags:['Servo','Giảm chấn','Cánh lật'],
+   desc:'Đôi chân có servo trợ lực và bộ giảm chấn, để chịu những cú đáp đất từ trên cao. Mặt sau bắp chân có cánh lật nhỏ giúp giữ thăng bằng khi bay, làm việc cùng cánh lật ở lưng.',
+   traits:[['gear','Cơ cấu','Servo ở gối và cổ chân'],['weight','Giảm chấn','Hấp thụ lực khi đáp đất'],['flight','Bay','Cánh lật nhỏ ở bắp chân'],['layers2','Vật liệu','Hợp kim vàng-titan']],
+   how:'Khi chạm đất, bộ giảm chấn ở gối và cổ chân co lại để hút bớt lực, giống lò xo. Khi đi bộ, servo giúp nâng bộ giáp nặng theo từng bước.',
+   analysis:'Chân vừa để đi lại, vừa là bệ đỡ cho động cơ ở giày. Toàn bộ lực đẩy chính đi qua ống chân, nên đây là phần phải cứng nhất sau giáp ngực.',
+   limit:'Bộ giáp nặng nên đi bộ chậm và tốn sức hơn bay. Servo ở gối dễ bị quá tải.',
+   caption:'Chân: đi như người, cất cánh như phản lực.', anchor:[200,720,135], n:[.3,0,.95], zoom:1.6, pitch:.04 },
+ { key:'boots', name:'Giày phản lực', en:'Boot Thrusters', sys:['flight'], tags:['Lực đẩy chính','Cất cánh','Đáp đất'],
+   desc:'Đế giày là động cơ đẩy chính, tạo phần lớn lực nâng khi cất cánh và bay thẳng. Đặt động cơ ở chân giúp cả cơ thể giống như thân một quả tên lửa.',
+   traits:[['flame','Vai trò','Lực đẩy chính khi bay'],['flight','Phối hợp','Repulsor tay để lái'],['gear','Đáp đất','Giảm lực trước khi chạm đất'],['bolt','Năng lượng','Lấy từ lò phản ứng']],
+   how:'Động cơ ở đế giày phun lực đẩy xuống dưới để nâng người lên. Muốn bay nhanh, Tony duỗi thẳng người và để giày đẩy về phía sau. Muốn đáp, giày giảm lực từ từ.',
+   analysis:'Vì động cơ chính ở chân, hai tay được rảnh để lái và chiến đấu. Đó là lý do Iron Man hay bay với hai tay duỗi xuôi theo người.',
+   limit:'Lực đẩy ở chân khó đổi hướng nhanh. Một bên giày hỏng thì bộ giáp gần như không giữ được hướng bay.',
+   film:'Trong phim đầu tiên (2008), Tony thử bay trong xưởng và bị ngã nhiều lần trước khi kiểm soát được lực đẩy ở giày và tay.',
+   caption:'Giày: mọi chuyến bay bắt đầu từ đây.', anchor:[205,120,120], n:[.3,.15,.95], zoom:2.1, pitch:.22 }
 ];
 PARTS.forEach((p,i)=>{ p.i=i; });
 const sysParts = k => k==='all' ? PARTS : PARTS.filter(p=>p.sys.includes(k));
 
 const OVERVIEW = {
-  caption:'Bộ giáp Mark VII trong phim The Avengers (2012)',
-  desc:'Đây là bộ giáp Tony Stark mặc khi đánh nhau ở New York. Điều đặc biệt: bộ giáp tự bay tới chỗ Tony và tự mặc vào người anh ngay giữa trời.',
-  traits:[['calendar','Phim','The Avengers (2012)'],['user','Người mặc','Tony Stark'],['signal','Cách gọi','Đeo vòng tay, bộ giáp tự bay tới'],['bolt','Nguồn điện','Lò phản ứng ở ngực']],
-  timeline:[['Mk I','Làm từ đồ phế liệu trong một hang đá.'],['Mk II','Màu bạc. Bị đóng băng khi bay quá cao.'],['Mk III','Đổi sang màu đỏ và vàng.'],['Mk IV','Mặc ở hội chợ Stark Expo.'],['Mk V','Gấp gọn trong một chiếc vali.'],['Mk VI','Có lò phản ứng mới và tia laser ở tay.'],['Mk VII','Tự bay tới người mặc. Có tên lửa ở vai.']]
+  caption:'Mark VII · trận chiến New York, The Avengers (2012)',
+  desc:'Đây là bộ giáp Tony Stark mặc trong trận chiến New York. Điểm mới lớn nhất là bộ giáp tự tới với người mặc: Tony đeo vòng tay định vị, bộ giáp phóng ra từ Stark Tower, bay tới và tự khoác lên người anh ngay giữa không trung. Mark VII giữ lại những gì đã hiệu quả ở các bộ trước (hợp kim vàng-titan, repulsor, Unibeam) và mang nhiều vũ khí hơn cho một trận đánh dài.',
+  traits:[['calendar','Ra mắt','The Avengers (2012)'],['user','Người mặc','Tony Stark'],['signal','Cách gọi giáp','Vòng tay định vị, phóng từ Stark Tower'],['bolt','Năng lượng','Lò phản ứng, lõi nguyên tố mới']],
+  story:[['1','Loki ném Tony ra khỏi cửa sổ Stark Tower. Mark VII bay theo và khoác lên người anh khi anh đang rơi.'],['2','Tony cùng nhóm Avengers đánh lính Chitauri trên khắp New York, dùng tên lửa vai và repulsor.'],['3','Tony mang một quả tên lửa hạt nhân bay qua cổng không gian. Bộ giáp mất điện khi ở bên kia và rơi trở lại Trái Đất.']],
+  timeline:[['Mk I','Iron Man (2008). Làm từ phế liệu trong hang đá ở Afghanistan để thoát thân. Nặng, chậm, chỉ bay được một đoạn ngắn.'],['Mk II','Bản thử bay đầu tiên, màu bạc. Bị đóng băng khi bay quá cao.'],['Mk III','Chuyển sang hợp kim vàng-titan và màu đỏ-vàng quen thuộc.'],['Mk IV','Iron Man 2 (2010). Bản nâng cấp, Tony mặc khi mở màn hội chợ Stark Expo.'],['Mk V','Gấp gọn trong một chiếc vali, dùng khi bị tấn công ở Monaco.'],['Mk VI','Dùng lò phản ứng nguyên tố mới, thêm laser ở cẳng tay.'],['Mk VII','The Avengers (2012). Tự bay tới người mặc, thêm tên lửa ở vai.']]
 };
 
 /* ================= HELPERS ================= */
@@ -586,7 +605,7 @@ sysEl.addEventListener('keydown',e=>{
 });
 
 const idx=$('#index');
-idx.innerHTML = `<li class="hd" style="--i:0">Các phần của bộ giáp</li>` + PARTS.map(p=>`<li style="--i:${p.i+1}"><button data-p="${p.i}" aria-current="false"><span class="n">${pad(p.i)}</span><span>${p.name}</span><span class="d"></span></button></li>`).join('');
+idx.innerHTML = `<li class="hd" style="--i:0">Bộ phận</li>` + PARTS.map(p=>`<li style="--i:${p.i+1}"><button data-p="${p.i}" aria-current="false"><span class="n">${pad(p.i)}</span><span>${p.name}</span><span class="d"></span></button></li>`).join('');
 idx.addEventListener('click',e=>{const b=e.target.closest('button');if(b)selectPart(+b.dataset.p,true);});
 
 const mpSys=$('#mpSys'), mpParts=$('#mpParts');
@@ -609,25 +628,26 @@ function viewOverview(){
   return [
     `<div class="eyebrow">Bộ giáp Mark VII</div>`,
     `<h1>Iron Man Mark VII</h1>`,
-    `<div class="tags"><span>Phim The Avengers</span><span>Tự bay tới</span><span>11 phần</span></div>`,
+    `<div class="tags"><span>The Avengers (2012)</span><span>Tự bay tới người mặc</span><span>11 bộ phận</span></div>`,
     `<p class="d">${OVERVIEW.desc}</p>`,
     `<h2>Điểm chính</h2>`, traitRows(OVERVIEW.traits),
-    `<h2 data-n="11">Các phần</h2>`, partRows(PARTS),
-    `<h2>Các bộ giáp trước đó</h2>`,
+    `<h2>Trận chiến New York</h2>`, `<div class="tl">${OVERVIEW.story.map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>`,
+    `<h2 data-n="11">Bộ phận</h2>`, partRows(PARTS),
+    `<h2>Các đời giáp trước Mark VII</h2>`,
     `<div class="tl">${OVERVIEW.timeline.map(([a,b],i)=>`<div class="${i===6?'cur':''}"><b>${a}</b><span>${b}</span></div>`).join('')}</div>`,
     `<h2>Cách xem</h2>`,
-    `<div class="note">${ic('hand')}<span>Bấm vào bộ giáp, vào các ô số, hoặc chọn trong danh sách.</span></div>`
+    `<div class="note">${ic('hand')}<span>Bấm thẳng vào mô hình, vào các ô số, hoặc chọn trong danh sách để đọc từng bộ phận.</span></div>`
   ];
 }
 function viewSystem(k){
   const s=SYSTEMS[k], list=sysParts(k);
   return [
-    `<div class="eyebrow">Nhóm · ${list.length} phần</div>`,
+    `<div class="eyebrow">Nhóm · ${list.length} bộ phận</div>`,
     `<h1>${s.name}</h1>`,
     `<div class="tags">${list.slice(0,3).map(p=>`<span>${p.name}</span>`).join('')}</div>`,
     `<p class="d">${s.desc}</p>`,
-    `<h2 data-n="${String(list.length).padStart(2,'0')}">Các phần trong nhóm</h2>`, partRows(list),
-    `<div class="note" style="margin-top:14px">${ic('eye')}<span>Các phần của nhóm này đang sáng lên trên bộ giáp.</span></div>`
+    `<h2 data-n="${String(list.length).padStart(2,'0')}">Bộ phận trong nhóm</h2>`, partRows(list),
+    `<div class="note" style="margin-top:14px">${ic('eye')}<span>Các bộ phận của nhóm này đang được làm sáng trên mô hình.</span></div>`
   ];
 }
 function viewPart(i){
@@ -639,8 +659,10 @@ function viewPart(i){
     `<div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div>`,
     `<p class="d">${p.desc}</p>`,
     `<h2>Điểm chính</h2>`, traitRows(p.traits),
+    `<h2>Cách hoạt động</h2>`, `<div class="note">${ic('gear')}<span>${p.how}</span></div>`,
     `<h2>Vì sao quan trọng</h2>`, `<div class="note">${ic(SYSTEMS[p.sys[0]].icon)}<span>${p.analysis}</span></div>`,
     `<h2>Điểm yếu</h2>`, `<div class="note warn">${ic('warn')}<span>${p.limit}</span></div>`,
+    ...(p.film?[`<h2>Trong phim</h2>`, `<div class="note">${ic('eye')}<span>${p.film}</span></div>`]:[]),
     `<div class="pager"><button data-p="${prev.i}">${ic('chevl')}${prev.name}</button><button data-p="${next.i}">${next.name}${ic('chev')}</button></div>`,
     `<button class="close" id="closeBtn" aria-pressed="false"><span class="lens" id="lens">${ic('eye')}</span><span><b>Xem gần</b><small>Phóng to vào ${p.name.toLowerCase()}.</small></span>${ic('chev')}</button>`
   ];
@@ -691,7 +713,7 @@ function selectPart(i,fly){
 function selectSystem(k){
   noteInteract();
   S.sys=k; S.part=-1; syncChrome(); renderPanel();
-  setCaption(k==='all'?OVERVIEW.caption:'Nhóm '+SYSTEMS[k].name.toLowerCase()+' · '+sysParts(k).length+' phần');
+  setCaption(k==='all'?OVERVIEW.caption:SYSTEMS[k].name+' · '+sysParts(k).length+' bộ phận');
   resetView(false);
 }
 function goOverview(){ S.part=-1; S.sys='all'; syncChrome(); renderPanel(); setCaption(OVERVIEW.caption); resetView(true); }
